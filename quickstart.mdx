@@ -1,80 +1,118 @@
 ---
 title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+description: "Get started with Mielto - Context Layer for AI in 3 simple steps"
 ---
 
-## Get started in three steps
+## Get started with Mielto API
 
-Get your documentation site running locally and make your first customization.
+Build AI applications with unlimited context and intelligent memory management in minutes.
 
-### Step 1: Set up your local environment
+### Step 1: Authentication
 
 <AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
+  <Accordion icon="user-plus" title="Register an account">
+    Create your Mielto account to get started:
     
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
+    ```bash
+    curl -X POST https://api.mielto.com/api/v1/auth/register \
+      -H "Content-Type: application/json" \
+      -d '{
+        "email": "your-email@example.com",
+        "password": "your-secure-password",
+        "first_name": "Your",
+        "last_name": "Name",
+        "workspace_name": "My Workspace"
+      }'
+    ```
   </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
+  <Accordion icon="key" title="Get your API key">
+    After registration, create an API key for your applications:
     
-    <Tip>Your preview updates automatically as you edit files.</Tip>
+    1. Login to get your access token
+    2. Create an API key via `/api/v1/api-keys`
+    3. Use this key in your application headers
+    
+    <Tip>Store your API key securely - it provides full access to your workspace!</Tip>
   </Accordion>
 </AccordionGroup>
 
-### Step 2: Deploy your changes
+### Step 2: Create your first memory
 
 <AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
+  <Accordion icon="brain" title="Store personal context">
+    Create a memory to store important context:
     
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
-
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
-
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
+    ```bash
+    curl -X POST https://api.mielto.com/api/v1/memories \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "user_id": "your-user-id",
+        "memory": "I prefer concise responses and work in software development",
+        "topics": ["preferences", "work"]
+      }'
+    ```
+  </Accordion>
+  <Accordion icon="database" title="Create a knowledge collection">
+    Set up a collection for your knowledge base:
+    
+    ```bash
+    curl -X POST https://api.mielto.com/api/v1/collections \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "name": "Company Knowledge",
+        "description": "Internal company information and procedures"
+      }'
+    ```
   </Accordion>
 </AccordionGroup>
 
-### Step 3: Go live
+### Step 3: Start a conversation with context
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
+<Accordion icon="comments" title="Use OpenAI-compatible endpoint">
+  Now use Mielto's OpenAI-compatible endpoint with automatic context injection:
+  
+  ```bash
+  curl -X POST https://api.mielto.com/api/v1/chat/completions \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "x-user-id: your-user-id" \
+    -d '{
+      "model": "gpt-4",
+      "messages": [
+        {"role": "user", "content": "Help me write a function"}
+      ]
+    }'
+  ```
+  
+  <Note>Mielto automatically injects relevant memories and knowledge!</Note>
 </Accordion>
 
 ## Next steps
 
-Now that you have your docs running, explore these key features:
+Now that you've created your first memory and collection, explore these powerful features:
 
 <CardGroup cols={2}>
 
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
+<Card title="Upload Documents" icon="upload" href="/api-reference/upload/upload">
+  Upload files, documents, and web content to your collections.
 </Card>
 
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
+<Card title="Search Collections" icon="magnifying-glass" href="/api-reference/collections/search">
+  Perform semantic, keyword, or hybrid search across your knowledge.
 </Card>
 
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
+<Card title="Manage Conversations" icon="comments" href="/api-reference/conversations/list">
+  Create and manage AI conversations with full context preservation.
 </Card>
 
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
+<Card title="OpenAI Compatibility" icon="robot" href="/api-reference/openai/chat-completions">
+  Drop-in replacement for OpenAI with unlimited context.
 </Card>
 
 </CardGroup>
 
 <Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
+  **Need help?** Check our [complete API reference](/api-reference/introduction) for detailed endpoint documentation.
 </Note>

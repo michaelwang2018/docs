@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Mielto API Documentation",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
@@ -57,12 +57,113 @@
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Authentication",
             "pages": [
+              "api-reference/auth/register",
               "api-reference/endpoint/get",
+              "api-reference/auth/refresh",
+              "api-reference/auth/session"
+            ]
+          },
+          {
+            "group": "Users",
+            "pages": [
+              "api-reference/users/me",
+              "api-reference/users/profile",
+              "api-reference/users/update-profile",
+              "api-reference/users/change-password"
+            ]
+          },
+          {
+            "group": "Workspaces",
+            "pages": [
               "api-reference/endpoint/create",
+              "api-reference/workspaces/list",
+              "api-reference/workspaces/get",
+              "api-reference/workspaces/members"
+            ]
+          },
+          {
+            "group": "Collections",
+            "pages": [
               "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/collections/list",
+              "api-reference/collections/search",
+              "api-reference/collections/archive",
+              "api-reference/collections/stats",
+              "api-reference/upload/upload"
+            ]
+          },
+          {
+            "group": "Conversations",
+            "pages": [
+              "api-reference/endpoint/webhook",
+              "api-reference/conversations/list",
+              "api-reference/conversations/get",
+              "api-reference/conversations/update",
+              "api-reference/conversations/delete",
+              "api-reference/conversations/messages",
+              "api-reference/conversations/stats",
+              "api-reference/conversations/end",
+              "api-reference/conversations/archive"
+            ]
+          },
+          {
+            "group": "Messages",
+            "pages": [
+              "api-reference/messages/create",
+              "api-reference/messages/list",
+              "api-reference/messages/get",
+              "api-reference/messages/update",
+              "api-reference/messages/delete",
+              "api-reference/messages/with-conversation",
+              "api-reference/messages/thread"
+            ]
+          },
+          {
+            "group": "Memories",
+            "pages": [
+              "api-reference/memories/create",
+              "api-reference/memories/list",
+              "api-reference/memories/get",
+              "api-reference/memories/update",
+              "api-reference/memories/search",
+              "api-reference/memories/replace",
+              "api-reference/memories/delete"
+            ]
+          },
+          {
+            "group": "Subscription Tiers",
+            "pages": [
+              "api-reference/tiers/create",
+              "api-reference/tiers/list",
+              "api-reference/tiers/get",
+              "api-reference/tiers/update",
+              "api-reference/tiers/delete"
+            ]
+          },
+          {
+            "group": "API Keys",
+            "pages": [
+              "api-reference/api-keys/create",
+              "api-reference/api-keys/list",
+              "api-reference/api-keys/get",
+              "api-reference/api-keys/update",
+              "api-reference/api-keys/delete"
+            ]
+          },
+          {
+            "group": "Utilities",
+            "pages": [
+              "api-reference/utilities/compress",
+              "api-reference/utilities/webhook"
+            ]
+          },
+          {
+            "group": "OpenAI Compatibility",
+            "pages": [
+              "api-reference/openai/chat-completions",
+              "api-reference/openai/responses"
             ]
           }
         ]

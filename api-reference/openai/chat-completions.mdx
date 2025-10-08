@@ -1,0 +1,23 @@
+---
+title: 'Chat Completions'
+openapi: 'POST /api/v1/chat/completions'
+---
+
+OpenAI-compatible chat completions endpoint with intelligent context injection, unlimited context through memory management, streaming support, and tool calling capabilities.
+
+## Key Features
+
+- **Unlimited Context**: Intelligent memory management breaks through token limits
+- **Auto Context Injection**: Retrieves relevant memories and knowledge automatically  
+- **Streaming Support**: Real-time responses with SSE
+- **Tool Calling**: Function execution and tool integration
+- **Cost Optimization**: Context optimization reduces API costs
+- **Diagnostic Headers**: Monitoring and debugging information
+
+## Context Headers
+
+- `x-user-id`: User identifier for memory retrieval
+- `x-conversation-id`: Conversation identifier for context continuity
+- `x-session-id`: Session identifier for session-based context
+- `x-workspace-id`: Workspace identifier for multi-tenant support
+- `x-collection-ids`: JSON array of collection IDs for knowledge retrieval

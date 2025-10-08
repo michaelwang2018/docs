@@ -1,0 +1,29 @@
+---
+title: 'Upload Files'
+openapi: 'POST /api/v1/upload'
+---
+
+Upload files, content, or URLs to a collection for knowledge processing and indexing.
+
+## Upload Types
+
+- **Files**: Upload one or multiple files (`file` or `files` parameter)
+- **Content**: Upload raw text content (`content` parameter)  
+- **URLs**: Upload content from URLs (`urls` parameter)
+- **Web Crawling**: Enable crawling for URL uploads (`crawl: true`)
+
+## Supported Content
+
+- Documents (PDF, DOCX, TXT, etc.)
+- Images and media files
+- Web pages and URLs
+- Raw text content
+- Multiple files in a single request
+
+## Features
+
+- **Automatic Processing**: Files are automatically processed and indexed
+- **Metadata Support**: Include custom metadata with uploads
+- **Batch Uploads**: Upload multiple files or URLs at once
+- **Web Crawling**: Automatically crawl and index web content
+- **Content Labeling**: Add labels and descriptions for organization

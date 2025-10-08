@@ -34,28 +34,11 @@
           {
             "group": "Authentication",
             "pages": [
-              "api-reference/auth/register",
-              "api-reference/endpoint/get",
-              "api-reference/auth/refresh",
-              "api-reference/auth/session"
-            ]
-          },
-          {
-            "group": "Users",
-            "pages": [
-              "api-reference/users/me",
-              "api-reference/users/profile",
-              "api-reference/users/update-profile",
-              "api-reference/users/change-password"
-            ]
-          },
-          {
-            "group": "Workspaces",
-            "pages": [
-              "api-reference/endpoint/create",
-              "api-reference/workspaces/list",
-              "api-reference/workspaces/get",
-              "api-reference/workspaces/members"
+              "api-reference/api-keys/create",
+              "api-reference/api-keys/list",
+              "api-reference/api-keys/get",
+              "api-reference/api-keys/update",
+              "api-reference/api-keys/delete"
             ]
           },
           {
@@ -108,26 +91,6 @@
             ]
           },
           {
-            "group": "Subscription Tiers",
-            "pages": [
-              "api-reference/tiers/create",
-              "api-reference/tiers/list",
-              "api-reference/tiers/get",
-              "api-reference/tiers/update",
-              "api-reference/tiers/delete"
-            ]
-          },
-          {
-            "group": "API Keys",
-            "pages": [
-              "api-reference/api-keys/create",
-              "api-reference/api-keys/list",
-              "api-reference/api-keys/get",
-              "api-reference/api-keys/update",
-              "api-reference/api-keys/delete"
-            ]
-          },
-          {
             "group": "Utilities",
             "pages": [
               "api-reference/utilities/compress",
@@ -168,7 +131,7 @@
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "href": "https://mielto.com/dashboard"
     }
   },
   "contextual": {

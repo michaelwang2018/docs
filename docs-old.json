@@ -1,0 +1,194 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Mielto API Docs",
+  "colors": {
+    "primary": "#16A34A",
+    "light": "#07C983",
+    "dark": "#15803D"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Getting started",
+            "pages": [
+              "index",
+              "quickstart",
+              "quickstart-conversations",
+              "api-reference/introduction"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          },
+          {
+            "group": "Authentication",
+            "pages": [
+              "api-reference/api-keys/create",
+              "api-reference/api-keys/list",
+              "api-reference/api-keys/get",
+              "api-reference/api-keys/update",
+              "api-reference/api-keys/delete"
+            ]
+          },
+          {
+            "group": "Collections",
+            "pages": [
+              "api-reference/collections/create",
+              "api-reference/collections/list",
+              "api-reference/collections/get",
+              "api-reference/collections/search",
+              "api-reference/collections/update",
+              "api-reference/collections/archive",
+              "api-reference/collections/delete",
+              "api-reference/collections/stats"
+            ]
+          },
+          {
+            "group": "Conversations",
+            "pages": [
+              "api-reference/conversations/create",
+              "api-reference/conversations/list",
+              "api-reference/conversations/get",
+              "api-reference/conversations/update",
+              "api-reference/conversations/delete",
+              "api-reference/conversations/messages",
+              "api-reference/conversations/stats",
+              "api-reference/conversations/end",
+              "api-reference/conversations/archive"
+            ]
+          },
+          {
+            "group": "Messages",
+            "pages": [
+              "api-reference/messages/create",
+              "api-reference/messages/list",
+              "api-reference/messages/get",
+              "api-reference/messages/update",
+              "api-reference/messages/delete",
+              "api-reference/messages/with-conversation",
+              "api-reference/messages/thread"
+            ]
+          },
+          {
+            "group": "Memories",
+            "pages": [
+              "api-reference/memories/create",
+              "api-reference/memories/list",
+              "api-reference/memories/get",
+              "api-reference/memories/update",
+              "api-reference/memories/search",
+              "api-reference/memories/replace",
+              "api-reference/memories/delete"
+            ]
+          },
+          {
+            "group": "Users",
+            "pages": [
+              "api-reference/users/me",
+              "api-reference/users/profile",
+              "api-reference/users/update-profile",
+              "api-reference/users/change-password"
+            ]
+          },
+          {
+            "group": "Workspaces",
+            "pages": [
+              "api-reference/workspaces/list",
+              "api-reference/workspaces/get",
+              "api-reference/workspaces/members"
+            ]
+          },
+          {
+            "group": "Upload",
+            "pages": [
+              "api-reference/upload/upload"
+            ]
+          },
+          {
+            "group": "Utilities",
+            "pages": [
+              "api-reference/utilities/compress",
+              "api-reference/utilities/webhook"
+            ]
+          },
+          {
+            "group": "Chunks",
+            "pages": [
+              "api-reference/chunks/create",
+              "api-reference/chunks/list",
+              "api-reference/chunks/get",
+              "api-reference/chunks/delete",
+              "api-reference/chunks/content"
+            ]
+          },
+          {
+            "group": "Logs",
+            "pages": [
+              "api-reference/logs/list",
+              "api-reference/logs/get",
+              "api-reference/logs/stats",
+              "api-reference/logs/trace"
+            ]
+          },
+          {
+            "group": "OpenAI Compatibility",
+            "pages": [
+              "api-reference/openai/chat-completions",
+              "api-reference/openai/responses"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "OpenAPI Reference",
+        "openapi": "api-reference/openapi.json"
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Go to Mielto Dashboard",
+          "href": "https://mielto.com/dashboard",
+          "icon": "brain"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "navbar": {
+    "links": [
+      { "label": "Support", "href": "mailto:support@mielto.com" }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://mielto.com/dashboard"
+    }
+  },
+  "contextual": {
+    "options": ["copy", "view", "chatgpt", "claude", "perplexity", "mcp", "cursor", "vscode"]
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/mieltoinc",
+      "github": "https://github.com/mieltoinc",
+      "linkedin": "https://linkedin.com/company/mieltoinc"
+    }
+  }
+}

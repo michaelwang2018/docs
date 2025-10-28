@@ -1,6 +1,160 @@
 ---
-title: 'Archive Conversation'
-openapi: 'PATCH /api/v1/conversations/{conversation_id}/archive'
+title: "Archive Conversation"
+api: "PATCH /api/v1/conversations/{conversation_id}/archive"
+description: "Archive a conversation to preserve it while removing it from active use"
 ---
 
-Archive a conversation to preserve it while removing it from active use.
+## Archive Conversation
+
+Archive a conversation to preserve its content while removing it from active listings. Archived conversations can be restored later.
+
+### Headers
+
+<ParamField header="Authorization" type="string">
+  Bearer token for authentication
+</ParamField>
+
+<ParamField header="X-API-Key" type="string">
+  API key for authentication (alternative to Authorization header)
+</ParamField>
+
+<ParamField header="X-Workspace-Id" type="string">
+  Optional. Derived from API Key, but can be specified if you have access to multiple workspaces
+</ParamField>
+
+### Path Parameters
+
+<ParamField path="conversation_id" type="string" required>
+  The unique identifier of the conversation to archive
+</ParamField>
+
+### Response
+
+Returns the updated conversation object with archived status.
+
+<ResponseField name="id" type="string">
+  Unique conversation identifier
+</ResponseField>
+
+<ResponseField name="title" type="string">
+  Conversation title
+</ResponseField>
+
+<ResponseField name="summary" type="string">
+  Auto-generated conversation summary
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  Conversation status (now "archived")
+</ResponseField>
+
+<ResponseField name="is_public" type="boolean">
+  Whether the conversation is public
+</ResponseField>
+
+<ResponseField name="collections" type="array">
+  Array of collection IDs associated with this conversation
+</ResponseField>
+
+<ResponseField name="meta_data" type="object">
+  Additional conversation metadata (includes archived timestamp)
+</ResponseField>
+
+<ResponseField name="settings" type="object">
+  Conversation-specific settings and configuration
+</ResponseField>
+
+<ResponseField name="ended_at" type="string">
+  Timestamp when conversation was ended (if applicable)
+</ResponseField>
+
+<ResponseField name="owner_id" type="string">
+  ID of the conversation owner
+</ResponseField>
+
+<ResponseField name="workspace_id" type="string">
+  ID of the workspace this conversation belongs to
+</ResponseField>
+
+<ResponseField name="created_by" type="string">
+  ID of the user who created the conversation
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  Timestamp when conversation was created
+</ResponseField>
+
+<ResponseField name="updated_at" type="string">
+  Timestamp when conversation was last updated
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X PATCH "https://api.mielto.com/api/v1/conversations/conv_123456789/archive" \
+  -H "X-API-Key: YOUR_API_KEY"
+```
+
+```python Python
+import requests
+
+conversation_id = "conv_123456789"
+response = requests.patch(
+    f"https://api.mielto.com/api/v1/conversations/{conversation_id}/archive",
+    headers={"X-API-Key": "YOUR_API_KEY"}
+)
+
+archived_conversation = response.json()
+```
+
+```javascript JavaScript
+const conversationId = "conv_123456789";
+const response = await fetch(`https://api.mielto.com/api/v1/conversations/${conversationId}/archive`, {
+  method: "PATCH",
+  headers: {
+    "X-API-Key": "YOUR_API_KEY"
+  }
+});
+
+const archivedConversation = await response.json();
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "id": "conv_123456789",
+  "title": "Product Strategy Discussion",
+  "summary": "Comprehensive discussion about Q2 product strategy covering market analysis, competitive positioning, and customer feedback integration",
+  "status": "archived",
+  "is_public": false,
+  "collections": ["col_123456789", "col_987654321"],
+  "meta_data": {
+    "category": "planning",
+    "priority": "high",
+    "department": "product",
+    "tags": ["strategy", "q2", "planning", "completed"],
+    "archived_at": "2024-01-16T18:00:00Z"
+  },
+  "settings": {
+    "auto_summarize": true,
+    "context_window": 6000,
+    "max_tokens": 3000,
+    "temperature": 0.7
+  },
+  "ended_at": "2024-01-16T17:00:00Z",
+  "owner_id": "usr_123456789",
+  "workspace_id": "wsp_123456789",
+  "created_by": "usr_123456789",
+  "created_at": "2024-01-16T10:00:00Z",
+  "updated_at": "2024-01-16T18:00:00Z"
+}
+```
+
+</ResponseExample>
+
+<Note>
+  Archived conversations are excluded from default conversation listings but remain searchable and accessible via direct ID. You can restore an archived conversation by updating its status back to "active".
+</Note>

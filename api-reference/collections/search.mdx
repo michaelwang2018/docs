@@ -1,6 +1,192 @@
 ---
-title: 'Search Collection'
-openapi: 'POST /api/v1/collections/search'
+title: "Search Collection"
+api: "POST /api/v1/collections/search"
+description: "Search within collections using fulltext, semantic, or hybrid search capabilities"
 ---
 
-Search within collections using fulltext, semantic, or hybrid search capabilities.
+## Search Collection
+
+Search within a collection using knowledge search with support for different search types including fulltext, semantic, and hybrid search.
+
+### Headers
+
+<ParamField header="Authorization" type="string">
+  Bearer token for authentication
+</ParamField>
+
+<ParamField header="X-API-Key" type="string">
+  API key for authentication (alternative to Authorization header)
+</ParamField>
+
+<ParamField header="X-Workspace-Id" type="string">
+  Optional. Derived from API Key, but can be specified if you have access to multiple workspaces
+</ParamField>
+
+### Request Body
+
+<ParamField body="query" type="string" required>
+  Search query string
+</ParamField>
+
+<ParamField body="collection_id" type="string" required>
+  ID of the collection to search in
+</ParamField>
+
+<ParamField body="search_type" type="string" default="hybrid">
+  Type of search to perform (vector, keyword, hybrid)
+</ParamField>
+
+<ParamField body="max_results" type="integer" default="10">
+  Maximum number of results to return (1-100)
+</ParamField>
+
+<ParamField body="filters" type="object">
+  Additional filters to apply to the search
+</ParamField>
+
+### Response
+
+<ResponseField name="results" type="array">
+  Array of search results
+  
+  <Expandable title="search result">
+    <ResponseField name="content" type="string">
+      The content text that matched
+    </ResponseField>
+    
+    <ResponseField name="score" type="number">
+      Relevance score (0-1)
+    </ResponseField>
+    
+    <ResponseField name="metadata" type="object">
+      Additional metadata for the result
+    </ResponseField>
+    
+    <ResponseField name="content_id" type="string">
+      ID of the source content
+    </ResponseField>
+    
+    <ResponseField name="source" type="string">
+      Source of the content
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="total_results" type="integer">
+  Total number of results found
+</ResponseField>
+
+<ResponseField name="query" type="string">
+  Original search query
+</ResponseField>
+
+<ResponseField name="search_type" type="string">
+  Type of search performed
+</ResponseField>
+
+<ResponseField name="collection_id" type="string">
+  Collection that was searched
+</ResponseField>
+
+<ResponseField name="execution_time_ms" type="number">
+  Search execution time in milliseconds
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://api.mielto.com/api/v1/collections/search" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "How to configure API authentication",
+    "collection_id": "col_123456789",
+    "search_type": "hybrid",
+    "max_results": 10
+  }'
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    "https://api.mielto.com/api/v1/collections/search",
+    headers={
+        "X-API-Key": "YOUR_API_KEY",
+        "Content-Type": "application/json"
+    },
+    json={
+        "query": "How to configure API authentication",
+        "collection_id": "col_123456789",
+        "search_type": "hybrid",
+        "max_results": 10
+    }
+)
+
+search_results = response.json()
+```
+
+```javascript JavaScript
+const response = await fetch("https://api.mielto.com/api/v1/collections/search", {
+  method: "POST",
+  headers: {
+    "X-API-Key": "YOUR_API_KEY",
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    query: "How to configure API authentication",
+    collection_id: "col_123456789",
+    search_type: "hybrid",
+    max_results: 10
+  })
+});
+
+const searchResults = await response.json();
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "results": [
+    {
+      "content": "API authentication can be configured using either API keys or Bearer tokens. To use API keys, include the X-API-Key header in your requests...",
+      "score": 0.95,
+      "metadata": {
+        "document_title": "Authentication Guide",
+        "section": "API Keys",
+        "page": 1
+      },
+      "content_id": "content_123456",
+      "source": "authentication-guide.pdf"
+    },
+    {
+      "content": "When configuring authentication, ensure you store your API keys securely and never expose them in client-side code...",
+      "score": 0.87,
+      "metadata": {
+        "document_title": "Security Best Practices",
+        "section": "API Security",
+        "page": 3
+      },
+      "content_id": "content_789012",
+      "source": "security-guide.pdf"
+    }
+  ],
+  "total_results": 2,
+  "query": "How to configure API authentication",
+  "search_type": "hybrid",
+  "collection_id": "col_123456789",
+  "execution_time_ms": 45.2
+}
+```
+
+</ResponseExample>
+
+<Note>
+  Search types:
+  - **vector**: Semantic similarity search using embeddings
+  - **keyword**: Traditional keyword-based search
+  - **hybrid**: Combination of vector and keyword search (recommended)
+</Note>

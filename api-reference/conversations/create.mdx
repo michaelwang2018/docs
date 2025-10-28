@@ -1,0 +1,189 @@
+---
+title: "Create Conversation"
+api: "POST /api/v1/conversations"
+description: "Create a new conversation with optional initial messages"
+---
+
+## Create Conversation
+
+Create a new conversation in your workspace. You can optionally include initial messages when creating the conversation.
+
+### Headers
+
+<ParamField header="Authorization" type="string">
+  Bearer token for authentication
+</ParamField>
+
+<ParamField header="X-API-Key" type="string">
+  API key for authentication (alternative to Authorization header)
+</ParamField>
+
+<ParamField header="X-Workspace-Id" type="string">
+  Optional. Derived from API Key, but can be specified if you have access to multiple workspaces
+</ParamField>
+
+### Request Body
+
+<ParamField body="title" type="string" required>
+  Title for the conversation
+</ParamField>
+
+<ParamField body="is_public" type="boolean" default="false">
+  Whether the conversation is public or private
+</ParamField>
+
+<ParamField body="collections" type="array">
+  Array of collection IDs to associate with this conversation
+</ParamField>
+
+<ParamField body="meta_data" type="object">
+  Additional metadata for the conversation
+</ParamField>
+
+<ParamField body="settings" type="object">
+  Conversation-specific settings and configuration
+</ParamField>
+
+<ParamField body="owner_id" type="string">
+  User ID to associate as the owner of this conversation
+</ParamField>
+
+<ParamField body="messages" type="array">
+  Array of initial messages to include in the conversation
+  
+  <Expandable title="message object">
+    <ParamField body="content" type="string" required>
+      The message content
+    </ParamField>
+    
+    <ParamField body="role" type="string" default="user">
+      Message role (user, assistant, system)
+    </ParamField>
+    
+    <ParamField body="message_type" type="string">
+      Type of message
+    </ParamField>
+    
+    <ParamField body="meta_data" type="object">
+      Additional metadata for the message
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+### Response
+
+Returns the created conversation object with all details.
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://api.mielto.com/api/v1/conversations" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Product Strategy Discussion",
+    "is_public": false,
+    "collections": ["col_123456789"],
+    "meta_data": {
+      "category": "planning",
+      "priority": "high"
+    },
+    "messages": [
+      {
+        "content": "What are the key considerations for our Q2 product strategy?",
+        "role": "user"
+      }
+    ]
+  }'
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    "https://api.mielto.com/api/v1/conversations",
+    headers={
+        "X-API-Key": "YOUR_API_KEY",
+        "Content-Type": "application/json"
+    },
+    json={
+        "title": "Product Strategy Discussion",
+        "is_public": False,
+        "collections": ["col_123456789"],
+        "meta_data": {
+            "category": "planning",
+            "priority": "high"
+        },
+        "messages": [
+            {
+                "content": "What are the key considerations for our Q2 product strategy?",
+                "role": "user"
+            }
+        ]
+    }
+)
+
+conversation = response.json()
+```
+
+```javascript JavaScript
+const response = await fetch("https://api.mielto.com/api/v1/conversations", {
+  method: "POST",
+  headers: {
+    "X-API-Key": "YOUR_API_KEY",
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    title: "Product Strategy Discussion",
+    is_public: false,
+    collections: ["col_123456789"],
+    meta_data: {
+      category: "planning",
+      priority: "high"
+    },
+    messages: [
+      {
+        content: "What are the key considerations for our Q2 product strategy?",
+        role: "user"
+      }
+    ]
+  })
+});
+
+const conversation = await response.json();
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "id": "conv_123456789",
+  "title": "Product Strategy Discussion",
+  "summary": null,
+  "status": "active",
+  "is_public": false,
+  "collections": ["col_123456789"],
+  "meta_data": {
+    "category": "planning",
+    "priority": "high"
+  },
+  "settings": {
+    "auto_summarize": true,
+    "context_window": 4000
+  },
+  "ended_at": null,
+  "owner_id": "usr_123456789",
+  "workspace_id": "wsp_123456789",
+  "created_by": "usr_123456789",
+  "created_at": "2024-01-16T10:00:00Z",
+  "updated_at": "2024-01-16T10:00:00Z"
+}
+```
+
+</ResponseExample>
+
+<Note>
+  The conversation is automatically associated with your current workspace. If you include initial messages, they will be created along with the conversation.
+</Note>

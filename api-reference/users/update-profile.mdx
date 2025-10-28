@@ -1,6 +1,143 @@
 ---
-title: 'Update User Profile'
-openapi: 'PUT /api/v1/users/profile'
+title: "Update User Profile"
+api: "PUT /api/v1/users/profile"
+description: "Update the current user's profile information"
 ---
 
-Update the current user's profile information.
+## Update User Profile
+
+Update profile information for the currently authenticated user.
+
+### Headers
+
+<ParamField header="X-API-Key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+<ParamField header="X-Workspace-Id" type="string">
+  Optional workspace ID header
+</ParamField>
+
+### Request Body
+
+<ParamField body="first_name" type="string">
+  User's first name (2-30 characters)
+</ParamField>
+
+<ParamField body="last_name" type="string">
+  User's last name (2-30 characters)
+</ParamField>
+
+<ParamField body="email" type="string">
+  User's email address
+</ParamField>
+
+<ParamField body="avatar_url" type="string">
+  URL to user's avatar image (must be valid URL)
+</ParamField>
+
+### Response
+
+<ResponseField name="id" type="string">
+  Unique user identifier
+</ResponseField>
+
+<ResponseField name="first_name" type="string">
+  Updated user's first name
+</ResponseField>
+
+<ResponseField name="last_name" type="string">
+  Updated user's last name
+</ResponseField>
+
+<ResponseField name="email" type="string">
+  Updated user's email address
+</ResponseField>
+
+<ResponseField name="avatar_url" type="string">
+  Updated URL to user's avatar image
+</ResponseField>
+
+<ResponseField name="auth_strategy" type="object">
+  Authentication strategy information
+</ResponseField>
+
+<ResponseField name="last_login_at" type="string">
+  Timestamp of last login (ISO 8601 format)
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X PUT "https://api.mielto.com/api/v1/users/profile" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -H "X-Workspace-Id: wsp_123456" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "email": "jane.smith@example.com",
+    "avatar_url": "https://example.com/avatar.jpg"
+  }'
+```
+
+```python Python
+import requests
+
+response = requests.put(
+    "https://api.mielto.com/api/v1/users/profile",
+    headers={
+        "X-API-Key": "YOUR_API_KEY",
+        "X-Workspace-Id": "wsp_123456",
+        "Content-Type": "application/json"
+    },
+    json={
+        "first_name": "Jane",
+        "last_name": "Smith",
+        "email": "jane.smith@example.com",
+        "avatar_url": "https://example.com/avatar.jpg"
+    }
+)
+
+updated_profile = response.json()
+```
+
+```javascript JavaScript
+const response = await fetch("https://api.mielto.com/api/v1/users/profile", {
+  method: "PUT",
+  headers: {
+    "X-API-Key": "YOUR_API_KEY",
+    "X-Workspace-Id": "wsp_123456",
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    first_name: "Jane",
+    last_name: "Smith",
+    email: "jane.smith@example.com",
+    avatar_url: "https://example.com/avatar.jpg"
+  })
+});
+
+const updatedProfile = await response.json();
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "id": "usr_123456789",
+  "first_name": "Jane",
+  "last_name": "Smith",
+  "email": "jane.smith@example.com",
+  "avatar_url": "https://example.com/avatar.jpg",
+  "auth_strategy": {
+    "provider": "email",
+    "verified": true
+  },
+  "last_login_at": "2024-01-15T10:30:00Z"
+}
+```
+
+</ResponseExample>

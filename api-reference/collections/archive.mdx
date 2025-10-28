@@ -1,6 +1,100 @@
 ---
-title: 'Archive Collection'
-openapi: 'POST /api/v1/collections/{collection_id}/archive'
+title: "Archive Collection"
+api: "POST /api/v1/collections/{collection_id}/archive"
+description: "Archive a collection to preserve it while removing it from active use"
 ---
 
-Archive a collection to preserve it while removing it from active use.
+## Archive Collection
+
+Archive a collection to preserve its content while removing it from active use. Archived collections are not searchable but can be restored later.
+
+### Headers
+
+<ParamField header="Authorization" type="string">
+  Bearer token for authentication
+</ParamField>
+
+<ParamField header="X-API-Key" type="string">
+  API key for authentication (alternative to Authorization header)
+</ParamField>
+
+<ParamField header="X-Workspace-Id" type="string">
+  Optional. Derived from API Key, but can be specified if you have access to multiple workspaces
+</ParamField>
+
+### Path Parameters
+
+<ParamField path="collection_id" type="string" required>
+  The unique identifier of the collection to archive
+</ParamField>
+
+### Response
+
+Returns the archived collection object with updated status.
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://api.mielto.com/api/v1/collections/col_123456789/archive" \
+  -H "X-API-Key: YOUR_API_KEY"
+```
+
+```python Python
+import requests
+
+collection_id = "col_123456789"
+response = requests.post(
+    f"https://api.mielto.com/api/v1/collections/{collection_id}/archive",
+    headers={"X-API-Key": "YOUR_API_KEY"}
+)
+
+archived_collection = response.json()
+```
+
+```javascript JavaScript
+const collectionId = "col_123456789";
+const response = await fetch(`https://api.mielto.com/api/v1/collections/${collectionId}/archive`, {
+  method: "POST",
+  headers: {
+    "X-API-Key": "YOUR_API_KEY"
+  }
+});
+
+const archivedCollection = await response.json();
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "id": "col_123456789",
+  "name": "Product Documentation",
+  "description": "All product documentation and guides",
+  "store_type": "pgvector",
+  "visibility": "private",
+  "status": "archived",
+  "tags": ["docs", "product"],
+  "stats": {
+    "document_count": 42,
+    "total_size_mb": 15.7,
+    "last_updated": "2024-01-16T09:30:00Z",
+    "vector_count": 1250
+  },
+  "meta_data": {
+    "category": "documentation",
+    "archived_at": "2024-01-16T15:00:00Z"
+  },
+  "workspace_id": "wsp_123456789",
+  "created_by": "usr_123456789",
+  "created_at": "2024-01-15T10:00:00Z",
+  "updated_at": "2024-01-16T15:00:00Z"
+}
+```
+
+</ResponseExample>
+
+<Note>
+  Archived collections are preserved but excluded from search operations. You can restore an archived collection by updating its status back to "active".
+</Note>

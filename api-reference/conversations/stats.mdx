@@ -1,6 +1,143 @@
 ---
-title: 'Get Conversation Stats'
-openapi: 'GET /api/v1/conversations/{conversation_id}/stats'
+title: "Get Conversation Stats"
+api: "GET /api/v1/conversations/{conversation_id}/stats"
+description: "Retrieve message statistics and analytics for a specific conversation"
 ---
 
-Retrieve message statistics and analytics for a specific conversation.
+## Get Conversation Stats
+
+Get comprehensive statistics and analytics for a conversation, including message counts, token usage, and other metrics.
+
+### Headers
+
+<ParamField header="Authorization" type="string">
+  Bearer token for authentication
+</ParamField>
+
+<ParamField header="X-API-Key" type="string">
+  API key for authentication (alternative to Authorization header)
+</ParamField>
+
+<ParamField header="X-Workspace-Id" type="string">
+  Optional. Derived from API Key, but can be specified if you have access to multiple workspaces
+</ParamField>
+
+### Path Parameters
+
+<ParamField path="conversation_id" type="string" required>
+  The unique identifier of the conversation to get stats for
+</ParamField>
+
+### Response
+
+Returns a statistics object containing various metrics about the conversation.
+
+<ResponseField name="total_messages" type="integer">
+  Total number of messages in the conversation
+</ResponseField>
+
+<ResponseField name="user_messages" type="integer">
+  Number of user messages
+</ResponseField>
+
+<ResponseField name="assistant_messages" type="integer">
+  Number of assistant messages
+</ResponseField>
+
+<ResponseField name="system_messages" type="integer">
+  Number of system messages
+</ResponseField>
+
+<ResponseField name="total_tokens" type="integer">
+  Total token count across all messages
+</ResponseField>
+
+<ResponseField name="avg_message_length" type="number">
+  Average character length of messages
+</ResponseField>
+
+<ResponseField name="conversation_duration" type="integer">
+  Duration of conversation in seconds
+</ResponseField>
+
+<ResponseField name="last_activity" type="string">
+  Timestamp of the last message or activity
+</ResponseField>
+
+<ResponseField name="message_frequency" type="object">
+  Breakdown of message frequency over time
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl "https://api.mielto.com/api/v1/conversations/conv_123456789/stats" \
+  -H "X-API-Key: YOUR_API_KEY"
+```
+
+```python Python
+import requests
+
+conversation_id = "conv_123456789"
+response = requests.get(
+    f"https://api.mielto.com/api/v1/conversations/{conversation_id}/stats",
+    headers={"X-API-Key": "YOUR_API_KEY"}
+)
+
+stats = response.json()
+```
+
+```javascript JavaScript
+const conversationId = "conv_123456789";
+const response = await fetch(`https://api.mielto.com/api/v1/conversations/${conversationId}/stats`, {
+  headers: {
+    "X-API-Key": "YOUR_API_KEY"
+  }
+});
+
+const stats = await response.json();
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "total_messages": 24,
+  "user_messages": 12,
+  "assistant_messages": 11,
+  "system_messages": 1,
+  "total_tokens": 15847,
+  "avg_message_length": 287.3,
+  "conversation_duration": 3600,
+  "last_activity": "2024-01-16T15:30:00Z",
+  "message_frequency": {
+    "messages_per_hour": 6.7,
+    "peak_activity_hour": "14:00",
+    "activity_pattern": {
+      "morning": 8,
+      "afternoon": 12,
+      "evening": 4,
+      "night": 0
+    }
+  },
+  "token_usage": {
+    "input_tokens": 8923,
+    "output_tokens": 6924,
+    "total_cost_estimate": 0.047
+  },
+  "engagement_metrics": {
+    "avg_response_time": 45.2,
+    "longest_message": 892,
+    "shortest_message": 12,
+    "unique_topics": 5
+  }
+}
+```
+
+</ResponseExample>
+
+<Note>
+  Statistics are calculated in real-time based on current message data. Token counts and cost estimates are approximate and may vary based on the AI model used.
+</Note>

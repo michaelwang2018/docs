@@ -1,6 +1,159 @@
 ---
-title: 'Update Collection Stats'
-openapi: 'PUT /api/v1/collections/{collection_id}/stats'
+title: "Update Collection Stats"
+api: "PUT /api/v1/collections/{collection_id}/stats"
+description: "Update statistical information and metrics for a collection"
 ---
 
-Update statistical information and metrics for a collection.
+## Update Collection Stats
+
+Update statistical information and metrics for a collection. This endpoint allows you to manually update collection statistics such as document counts, size metrics, and custom analytics.
+
+### Headers
+
+<ParamField header="Authorization" type="string">
+  Bearer token for authentication
+</ParamField>
+
+<ParamField header="X-API-Key" type="string">
+  API key for authentication (alternative to Authorization header)
+</ParamField>
+
+<ParamField header="X-Workspace-Id" type="string">
+  Optional. Derived from API Key, but can be specified if you have access to multiple workspaces
+</ParamField>
+
+### Path Parameters
+
+<ParamField path="collection_id" type="string" required>
+  The unique identifier of the collection to update stats for
+</ParamField>
+
+### Request Body
+
+<ParamField body="stats" type="object" required>
+  Statistics object containing metrics to update
+  
+  <Expandable title="stats object">
+    <ParamField body="document_count" type="integer">
+      Number of documents in the collection
+    </ParamField>
+    
+    <ParamField body="total_size_mb" type="number">
+      Total size of the collection in megabytes
+    </ParamField>
+    
+    <ParamField body="vector_count" type="integer">
+      Number of vectors/embeddings in the collection
+    </ParamField>
+    
+    <ParamField body="last_updated" type="string">
+      Last update timestamp
+    </ParamField>
+    
+    <ParamField body="avg_document_size" type="number">
+      Average document size in bytes
+    </ParamField>
+    
+    <ParamField body="processing_status" type="string">
+      Processing status of the collection
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+### Response
+
+Returns the updated collection object with new statistics.
+
+<RequestExample>
+
+```bash cURL
+curl -X PUT "https://api.mielto.com/api/v1/collections/col_123456789/stats" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "document_count": 50,
+    "total_size_mb": 18.5,
+    "vector_count": 1500,
+    "last_updated": "2024-01-16T16:00:00Z",
+    "processing_status": "completed"
+  }'
+```
+
+```python Python
+import requests
+
+collection_id = "col_123456789"
+response = requests.put(
+    f"https://api.mielto.com/api/v1/collections/{collection_id}/stats",
+    headers={
+        "X-API-Key": "YOUR_API_KEY",
+        "Content-Type": "application/json"
+    },
+    json={
+        "document_count": 50,
+        "total_size_mb": 18.5,
+        "vector_count": 1500,
+        "last_updated": "2024-01-16T16:00:00Z",
+        "processing_status": "completed"
+    }
+)
+
+updated_collection = response.json()
+```
+
+```javascript JavaScript
+const collectionId = "col_123456789";
+const response = await fetch(`https://api.mielto.com/api/v1/collections/${collectionId}/stats`, {
+  method: "PUT",
+  headers: {
+    "X-API-Key": "YOUR_API_KEY",
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    document_count: 50,
+    total_size_mb: 18.5,
+    vector_count: 1500,
+    last_updated: "2024-01-16T16:00:00Z",
+    processing_status: "completed"
+  })
+});
+
+const updatedCollection = await response.json();
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "id": "col_123456789",
+  "name": "Product Documentation",
+  "description": "All product documentation and guides",
+  "store_type": "pgvector",
+  "visibility": "private",
+  "status": "active",
+  "tags": ["docs", "product"],
+  "stats": {
+    "document_count": 50,
+    "total_size_mb": 18.5,
+    "vector_count": 1500,
+    "last_updated": "2024-01-16T16:00:00Z",
+    "avg_document_size": 385000,
+    "processing_status": "completed"
+  },
+  "meta_data": {
+    "category": "documentation"
+  },
+  "workspace_id": "wsp_123456789",
+  "created_by": "usr_123456789",
+  "created_at": "2024-01-15T10:00:00Z",
+  "updated_at": "2024-01-16T16:00:00Z"
+}
+```
+
+</ResponseExample>
+
+<Note>
+  Statistics are typically updated automatically by the system, but this endpoint allows for manual updates when needed for analytics or administrative purposes.
+</Note>

@@ -1,0 +1,165 @@
+---
+title: "Quickstart - BYOM (Bring Your Own Messages)"
+description: "Get started with Mielto - Bringing your own existing messages and conversations"
+---
+
+<CardGroup cols={1}>
+<Card title="Quickstart - Conversations & Messages" icon="comments" href="#quickstart-conversations-messages">
+  Bring existing user conversations and messages into Mielto.
+</Card>
+</CardGroup>
+
+<Note>
+  **Need help?** Check our [complete API reference](/api-reference/introduction) for detailed endpoint documentation.
+</Note>
+
+<Note>
+  **Need help?** Check our [complete API reference](/api-reference/introduction) for detailed endpoint documentation.
+</Note>
+
+<div id="quickstart-conversations-messages" />
+## Quickstart - Conversations & Messages
+
+### 1) Create a conversation for a user
+
+```bash
+curl -X POST https://api.mielto.com/api/v1/conversations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_id": "your-user-id",
+    "title": "Onboarding conversation"
+  }'
+```
+
+The response includes `id` (e.g., `conv_01234567890abcdef`). Use this as `conversation_id` for messages.
+
+### 2) Upload existing messages
+
+You can post messages to `https://api.mielto.com/api/v1/messages`.
+
+Include either `Authorization: Bearer {apikey}` or `x-api-key: {apikey}` and a body with messages in the `content` field:
+
+```json
+[
+  {
+    "role": "user",
+    "created_at": "2025-06-10T10:28:06.658Z",
+    "sender_id": "326166736",
+    "content": "message"
+  },
+  {
+    "role": "assistant",
+    "created_at": "2025-06-10T10:28:11.64Z",
+    "sender_id": "326166736",
+    "content": "message body"
+  }
+]
+```
+
+How `conversation_id` works:
+
+1. Required in practice: although optional in some schemas, provide `conversation_id` when creating messages.
+2. Flow:
+   - API receives `conversation_id` in the create payload
+   - The handler assigns this `conversation_id` to each created message
+
+Example API requests:
+
+```bash
+curl -X POST https://api.mielto.com/api/v1/messages \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "conversation_id": "conv_01234567890abcdef",
+    "content": {
+      "content": "Hello, how are you?",
+      "role": "user",
+      "message_type": "text"
+    },
+    "enable_memories": false
+  }'
+```
+
+Or with multiple messages:
+
+```bash
+curl -X POST https://api.mielto.com/api/v1/messages \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "conversation_id": "conv_01234567890abcdef",
+    "content": [
+      {
+        "content": "Hello, how are you?",
+        "role": "user",
+        "message_type": "text",
+        "sender_id": "your_applications_id_of_user_who_sent_message"
+      },
+      {
+        "content": "I\'m doing well, thank you!",
+        "role": "assistant",
+        "message_type": "text",
+        "sender_id": "user_or_agent_id"
+      }
+    ],
+    "enable_memories": true
+  }'
+```
+
+`conversation_id` groups messages, supports deduplication, enforces sender consistency within a conversation, and is used when embedding conversation content into collections.
+
+### 3) Call the completions endpoint with a user_id
+
+You can use the OpenAI SDKs by setting the base URL to `https://api.mielto.com/api/v1`, passing your API key from the Mielto dashboard, and including the `x-user-id` header with your internal user ID.
+
+```bash
+curl -X POST https://api.mielto.com/api/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "x-user-id: your-user-id" \
+  -d '{
+    "model": "gpt-4",
+    "messages": [
+      {"role": "user", "content": "Summarize this conversation."}
+    ]
+  }'
+```
+
+```python
+# Python (openai>=1.0.0)
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.mielto.com/api/v1",
+    default_headers={
+        "x-user-id": "your-user-id",
+    },
+)
+
+resp = client.chat.completions.create(
+    model="gpt-4",
+    messages=[{"role": "user", "content": "Summarize this conversation."}],
+)
+print(resp.choices[0].message.content)
+```
+
+```typescript
+// TypeScript/JavaScript (openai@^4)
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: process.env.MIELTO_API_KEY!,
+  baseURL: 'https://api.mielto.com/api/v1',
+  defaultHeaders: {
+    'x-user-id': 'your-user-id',
+  },
+});
+
+const resp = await client.chat.completions.create({
+  model: 'gpt-4',
+  messages: [{ role: 'user', content: 'Summarize this conversation.' }],
+});
+console.log(resp.choices[0].message?.content);
+```

@@ -1,15 +1,15 @@
 ---
-title: "Delete Conversation"
-api: "DELETE /api/v1/conversations/{conversation_id}"
-description: "Permanently delete a conversation and all associated messages"
+title: "Delete Collection"
+api: "DELETE /api/v1/collections/{collection_id}"
+description: "Permanently delete a collection and all its contents"
 ---
 
-## Delete Conversation
+## Delete Collection
 
-Permanently delete a conversation and all its associated messages. This action cannot be undone.
+Permanently delete a collection and all its associated content, including documents, vectors, and metadata.
 
 <Warning>
-  This action cannot be undone. All messages, metadata, and associated data in this conversation will be permanently deleted.
+  This action cannot be undone. All documents, vectors, and associated data in this collection will be permanently deleted.
 </Warning>
 
 ### Headers
@@ -28,8 +28,8 @@ Permanently delete a conversation and all its associated messages. This action c
 
 ### Path Parameters
 
-<ParamField path="conversation_id" type="string" required>
-  The unique identifier of the conversation to delete
+<ParamField path="collection_id" type="string" required>
+  The unique identifier of the collection to delete
 </ParamField>
 
 ### Response
@@ -39,16 +39,16 @@ Returns `204 No Content` on successful deletion.
 <RequestExample>
 
 ```bash cURL
-curl -X DELETE "https://api.mielto.com/api/v1/conversations/conv_123456789" \
+curl -X DELETE "https://api.mielto.com/api/v1/collections/col_123456789" \
   -H "X-API-Key: YOUR_API_KEY"
 ```
 
 ```python Python
 import requests
 
-conversation_id = "conv_123456789"
+collection_id = "col_123456789"
 response = requests.delete(
-    f"https://api.mielto.com/api/v1/conversations/{conversation_id}",
+    f"https://api.mielto.com/api/v1/collections/{collection_id}",
     headers={"X-API-Key": "YOUR_API_KEY"}
 )
 
@@ -57,8 +57,8 @@ print(f"Status Code: {response.status_code}")
 ```
 
 ```javascript JavaScript
-const conversationId = "conv_123456789";
-const response = await fetch(`https://api.mielto.com/api/v1/conversations/${conversationId}`, {
+const collectionId = "col_123456789";
+const response = await fetch(`https://api.mielto.com/api/v1/collections/${collectionId}`, {
   method: "DELETE",
   headers: {
     "X-API-Key": "YOUR_API_KEY"
@@ -78,7 +78,3 @@ No content returned (204 status code)
 ```
 
 </ResponseExample>
-
-<Note>
-  Consider using the [Archive Conversation](/api-reference/conversations/archive) endpoint instead if you want to preserve the conversation data while removing it from active use.
-</Note>

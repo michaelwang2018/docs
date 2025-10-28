@@ -1,6 +1,179 @@
 ---
-title: 'List Collections'
-openapi: 'GET /api/v1/collections'
+title: "List Collections"
+api: "GET /api/v1/collections"
+description: "Retrieve all collections in the current workspace with filtering and pagination"
 ---
 
-Retrieve all collections in the current workspace.
+## List Collections
+
+Retrieve collections with pagination and filtering options. Collections are used to organize and store knowledge bases, documents, and other content.
+
+### Headers
+
+<ParamField header="Authorization" type="string">
+  Bearer token for authentication
+</ParamField>
+
+<ParamField header="X-API-Key" type="string">
+  API key for authentication (alternative to Authorization header)
+</ParamField>
+
+<ParamField header="X-Workspace-Id" type="string">
+  Optional. Derived from API Key, but can be specified if you have access to multiple workspaces
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="skip" type="integer" default="0">
+  Number of collections to skip for pagination (minimum: 0)
+</ParamField>
+
+<ParamField query="limit" type="integer" default="100">
+  Maximum number of collections to return (1-1000)
+</ParamField>
+
+<ParamField query="status" type="string">
+  Filter by collection status (active, archived)
+</ParamField>
+
+<ParamField query="visibility" type="string">
+  Filter by visibility (public, private)
+</ParamField>
+
+<ParamField query="search" type="string">
+  Search collections by name or description
+</ParamField>
+
+<ParamField query="tags" type="string">
+  Filter by tags (comma-separated)
+</ParamField>
+
+### Response
+
+<ResponseField name="data" type="array">
+  Array of collection objects
+  
+  <Expandable title="collection object">
+    <ResponseField name="id" type="string">
+      Unique collection identifier
+    </ResponseField>
+    
+    <ResponseField name="name" type="string">
+      Collection name
+    </ResponseField>
+    
+    <ResponseField name="description" type="string">
+      Collection description
+    </ResponseField>
+    
+    <ResponseField name="store_type" type="string">
+      Storage type (pgvector, chroma, pinecone, etc.)
+    </ResponseField>
+    
+    <ResponseField name="visibility" type="string">
+      Collection visibility (private, public)
+    </ResponseField>
+    
+    <ResponseField name="status" type="string">
+      Collection status (active, archived)
+    </ResponseField>
+    
+    <ResponseField name="tags" type="array">
+      Collection tags
+    </ResponseField>
+    
+    <ResponseField name="stats" type="object">
+      Collection statistics
+    </ResponseField>
+    
+    <ResponseField name="created_at" type="string">
+      Creation timestamp
+    </ResponseField>
+    
+    <ResponseField name="updated_at" type="string">
+      Last update timestamp
+    </ResponseField>
+    
+    <ResponseField name="created_by" type="string">
+      User who created the collection
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="total_count" type="integer">
+  Total number of collections matching the filters
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://api.mielto.com/api/v1/collections?skip=0&limit=50&status=active" \
+  -H "X-API-Key: YOUR_API_KEY"
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    "https://api.mielto.com/api/v1/collections",
+    headers={"X-API-Key": "YOUR_API_KEY"},
+    params={
+        "skip": 0,
+        "limit": 50,
+        "status": "active",
+        "search": "documents"
+    }
+)
+
+collections = response.json()
+```
+
+```javascript JavaScript
+const response = await fetch("https://api.mielto.com/api/v1/collections?skip=0&limit=50&status=active", {
+  headers: {
+    "X-API-Key": "YOUR_API_KEY"
+  }
+});
+
+const collections = await response.json();
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "data": [
+    {
+      "id": "col_123456789",
+      "name": "Product Documentation",
+      "description": "All product documentation and guides",
+      "store_type": "pgvector",
+      "visibility": "private",
+      "status": "active",
+      "tags": ["docs", "product"],
+      "stats": {
+        "document_count": 42,
+        "total_size_mb": 15.7,
+        "last_updated": "2024-01-16T09:30:00Z"
+      },
+      "meta_data": {
+        "category": "documentation"
+      },
+      "embedding": {
+        "provider": "openai",
+        "model": "text-embedding-ada-002",
+        "dimensions": 1536
+      },
+      "workspace_id": "wsp_123456789",
+      "created_by": "usr_123456789",
+      "created_at": "2024-01-15T10:00:00Z",
+      "updated_at": "2024-01-16T09:30:00Z"
+    }
+  ],
+  "total_count": 1
+}
+```
+
+</ResponseExample>

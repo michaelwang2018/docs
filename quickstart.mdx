@@ -11,32 +11,80 @@ Build AI applications with unlimited context and intelligent memory management i
 
 <AccordionGroup>
   <Accordion icon="user-plus" title="Register an account">
-    Create your Mielto account to get started:
-    
-    ```bash
-    curl -X POST https://api.mielto.com/api/v1/auth/register \
-      -H "Content-Type: application/json" \
-      -d '{
-        "email": "your-email@example.com",
-        "password": "your-secure-password",
-        "first_name": "Your",
-        "last_name": "Name",
-        "workspace_name": "My Workspace"
-      }'
-    ```
+    Create your Mielto account to get started: <a href="https://mielto.com/signup">Sign up</a>
   </Accordion>
   <Accordion icon="key" title="Get your API key">
     After registration, create an API key for your applications:
     
     1. Login to get your access token
-    2. Create an API key via `/api/v1/api-keys`
+    2. Create an API key via the API Keys dashboard
     3. Use this key in your application headers
     
     <Tip>Store your API key securely - it provides full access to your workspace!</Tip>
   </Accordion>
 </AccordionGroup>
 
-### Step 2: Create your first memory
+### Step 2: Create your first collection
+
+<AccordionGroup>
+  <Accordion icon="database" title="Create a knowledge collection">
+    Set up a collection for your knowledge base:
+    
+    ```bash
+    curl -X POST https://api.mielto.com/api/v1/collections \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "name": "Company Knowledge",
+        "description": "Internal company information and procedures"
+      }'
+    ```
+
+    Quickly call this endpoint from clients:
+
+    ```typescript
+    // TypeScript/JavaScript
+    async function createCollection() {
+      const response = await fetch('https://api.mielto.com/api/v1/collections', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.MIELTO_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: 'Company Knowledge',
+          description: 'Internal company information and procedures',
+        }),
+      });
+      if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+      return await response.json();
+    }
+    ```
+
+    ```python
+    # Python
+    import os, requests
+
+    def create_collection():
+        res = requests.post(
+            'https://api.mielto.com/api/v1/collections',
+            headers={
+                'Authorization': f"Bearer {os.environ.get('MIELTO_API_KEY')}",
+                'Content-Type': 'application/json',
+            },
+            json={
+                'name': 'Company Knowledge',
+                'description': 'Internal company information and procedures',
+            },
+            timeout=30,
+        )
+        res.raise_for_status()
+        return res.json()
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Step 3: Create your first memory
 
 <AccordionGroup>
   <Accordion icon="brain" title="Store personal context">
@@ -53,22 +101,10 @@ Build AI applications with unlimited context and intelligent memory management i
       }'
     ```
   </Accordion>
-  <Accordion icon="database" title="Create a knowledge collection">
-    Set up a collection for your knowledge base:
-    
-    ```bash
-    curl -X POST https://api.mielto.com/api/v1/collections \
-      -H "Authorization: Bearer YOUR_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-        "name": "Company Knowledge",
-        "description": "Internal company information and procedures"
-      }'
-    ```
-  </Accordion>
+  
 </AccordionGroup>
 
-### Step 3: Start a conversation with context
+### Step 4: Start a conversation with context
 
 <Accordion icon="comments" title="Use OpenAI-compatible endpoint">
   Now use Mielto's OpenAI-compatible endpoint with automatic context injection:
@@ -86,6 +122,46 @@ Build AI applications with unlimited context and intelligent memory management i
     }'
   ```
   
+  SDK examples (set base URL, API key, and headers):
+
+  ```python
+  # Python (openai>=1.0.0)
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://api.mielto.com/api/v1",
+      default_headers={
+          "x-user-id": "your-user-id",
+      },
+  )
+
+  resp = client.chat.completions.create(
+      model="gpt-4",
+      messages=[{"role": "user", "content": "Help me write a function"}],
+  )
+  print(resp.choices[0].message.content)
+  ```
+
+  ```typescript
+  // TypeScript/JavaScript (openai@^4)
+  import OpenAI from 'openai';
+
+  const client = new OpenAI({
+    apiKey: process.env.MIELTO_API_KEY!,
+    baseURL: 'https://api.mielto.com/api/v1',
+    defaultHeaders: {
+      'x-user-id': 'your-user-id',
+    },
+  });
+
+  const resp = await client.chat.completions.create({
+    model: 'gpt-4',
+    messages: [{ role: 'user', content: 'Help me write a function' }],
+  });
+  console.log(resp.choices[0].message?.content);
+  ```
+
   <Note>Mielto automatically injects relevant memories and knowledge!</Note>
 </Accordion>
 
@@ -111,6 +187,10 @@ Now that you've created your first memory and collection, explore these powerful
   Drop-in replacement for OpenAI with unlimited context.
 </Card>
 
+<Card title="Quickstart - Conversations & Messages" icon="comments" href="/quickstart-conversations">
+  Bring existing user conversations and messages into Mielto.
+</Card>
+ 
 </CardGroup>
 
 <Note>

@@ -1,6 +1,103 @@
 ---
-title: 'Get Current User'
-openapi: 'GET /api/v1/user/me/'
+title: "Get Current User"
+api: "GET /api/v1/user/me/"
+description: "Get detailed information about the currently authenticated user"
 ---
 
-Get detailed information about the currently authenticated user.
+## Get Current User
+
+Retrieve detailed information about the currently authenticated user, including profile details and authentication status.
+
+### Headers
+
+<ParamField header="X-API-Key" type="string" required>
+  Your API key for authentication
+</ParamField>
+
+<ParamField header="X-Workspace-Id" type="string">
+  Optional workspace ID header
+</ParamField>
+
+### Response
+
+<ResponseField name="id" type="string">
+  Unique user identifier
+</ResponseField>
+
+<ResponseField name="first_name" type="string">
+  User's first name
+</ResponseField>
+
+<ResponseField name="last_name" type="string">
+  User's last name
+</ResponseField>
+
+<ResponseField name="email" type="string">
+  User's email address
+</ResponseField>
+
+<ResponseField name="avatar_url" type="string">
+  URL to user's avatar image
+</ResponseField>
+
+<ResponseField name="auth_strategy" type="object">
+  Authentication strategy information
+</ResponseField>
+
+<ResponseField name="last_login_at" type="string">
+  Timestamp of last login (ISO 8601 format)
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X GET "https://api.mielto.com/api/v1/user/me/" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -H "X-Workspace-Id: wsp_123456"
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    "https://api.mielto.com/api/v1/user/me/",
+    headers={
+        "X-API-Key": "YOUR_API_KEY",
+        "X-Workspace-Id": "wsp_123456"
+    }
+)
+
+user = response.json()
+```
+
+```javascript JavaScript
+const response = await fetch("https://api.mielto.com/api/v1/user/me/", {
+  headers: {
+    "X-API-Key": "YOUR_API_KEY",
+    "X-Workspace-Id": "wsp_123456"
+  }
+});
+
+const user = await response.json();
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "id": "usr_123456789",
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "john.doe@example.com",
+  "avatar_url": "https://api.mielto.com/avatars/usr_123456789.jpg",
+  "auth_strategy": {
+    "provider": "email",
+    "verified": true
+  },
+  "last_login_at": "2024-01-15T10:30:00Z"
+}
+```
+
+</ResponseExample>

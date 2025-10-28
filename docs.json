@@ -17,102 +17,24 @@
             "group": "Getting started",
             "pages": [
               "index",
-              "quickstart"
+              "quickstart",
+              "quickstart-conversations",
+              "api-reference/introduction"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Authentication",
-            "pages": [
-              "api-reference/api-keys/create",
-              "api-reference/api-keys/list",
-              "api-reference/api-keys/get",
-              "api-reference/api-keys/update",
-              "api-reference/api-keys/delete"
-            ]
-          },
-          {
-            "group": "Collections",
-            "pages": [
-              "api-reference/endpoint/delete",
-              "api-reference/collections/list",
-              "api-reference/collections/search",
-              "api-reference/collections/archive",
-              "api-reference/collections/stats",
-              "api-reference/upload/upload"
-            ]
-          },
-          {
-            "group": "Conversations",
-            "pages": [
-              "api-reference/endpoint/webhook",
-              "api-reference/conversations/list",
-              "api-reference/conversations/get",
-              "api-reference/conversations/update",
-              "api-reference/conversations/delete",
-              "api-reference/conversations/messages",
-              "api-reference/conversations/stats",
-              "api-reference/conversations/end",
-              "api-reference/conversations/archive"
-            ]
-          },
-          {
-            "group": "Messages",
-            "pages": [
-              "api-reference/messages/create",
-              "api-reference/messages/list",
-              "api-reference/messages/get",
-              "api-reference/messages/update",
-              "api-reference/messages/delete",
-              "api-reference/messages/with-conversation",
-              "api-reference/messages/thread"
-            ]
-          },
-          {
-            "group": "Memories",
-            "pages": [
-              "api-reference/memories/create",
-              "api-reference/memories/list",
-              "api-reference/memories/get",
-              "api-reference/memories/update",
-              "api-reference/memories/search",
-              "api-reference/memories/replace",
-              "api-reference/memories/delete"
-            ]
-          },
-          {
-            "group": "Utilities",
-            "pages": [
-              "api-reference/utilities/compress",
-              "api-reference/utilities/webhook"
-            ]
-          },
-          {
-            "group": "OpenAI Compatibility",
-            "pages": [
-              "api-reference/openai/chat-completions",
-              "api-reference/openai/responses"
-            ]
-          }
-        ]
+        "tab": "OpenAPI Reference",
+        "openapi": "api-reference/openapi.json"
       }
     ],
     "global": {
       "anchors": [
         {
-          "anchor": "API Reference",
-          "href": "https://docs.mielto.com/api-reference/introduction",
-          "icon": "book-open-cover"
+          "anchor": "Go to Mielto Dashboard",
+          "href": "https://mielto.com/dashboard",
+          "icon": "brain"
         }
       ]
     }
@@ -123,10 +45,7 @@
   },
   "navbar": {
     "links": [
-      {
-        "label": "Support",
-        "href": "mailto:support@mielto.com"
-      }
+      { "label": "Support", "href": "mailto:support@mielto.com" }
     ],
     "primary": {
       "type": "button",
@@ -135,16 +54,7 @@
     }
   },
   "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+    "options": ["copy", "view", "chatgpt", "claude", "perplexity", "mcp", "cursor", "vscode"]
   },
   "footer": {
     "socials": {

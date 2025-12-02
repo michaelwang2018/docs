@@ -19,6 +19,7 @@
               "index",
               "quickstart",
               "quickstart-conversations",
+              "quickstart-memory-context-tool-calling",
               "api-reference/introduction"
             ]
           }

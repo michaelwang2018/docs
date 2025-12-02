@@ -1,0 +1,767 @@
+---
+title: "Quickstart - Use Mielto via Tool Calling"
+description: "Enable Mielto via tool calling in agents/LLM calls"
+---
+
+## Tool Calling with Mielto
+
+Enable your AI agents to interact with Mielto's API endpoints directly through tool calling (function calling). This allows LLMs to search collections, manage memories, and access knowledge bases autonomously.
+
+### Architecture Overview
+
+When using tool calling with Mielto:
+- **OpenAI Client**: Handles LLM chat completions and tool call requests
+- **Mielto Client**: Executes the actual API calls to Mielto endpoints (collections, memories, etc.) when tools are invoked
+
+The LLM receives tool definitions and decides when to call them. When a tool is requested, your application executes the corresponding Mielto API call and returns the result to the LLM.
+
+### What is Tool Calling?
+
+Tool calling allows LLMs to request execution of specific functions during a conversation. When you define Mielto endpoints as tools, the LLM can:
+- Search your knowledge collections
+- Retrieve user memories
+- Create new memories
+- List available collections
+- And more - all without manual intervention
+
+### Step 1: Define Mielto Endpoints as Tools
+
+Define your tools using OpenAI's function calling format. Here are common Mielto endpoints as tools:
+
+<AccordionGroup>
+<Accordion icon="code" title="Python - Define Mielto tools">
+
+```python
+# Python - Define Mielto tools
+MIELTO_TOOLS = [
+    {
+        "type": "function",
+        "function": {
+            "name": "search_collections",
+            "description": "Search within a knowledge collection using semantic, keyword, or hybrid search. Use this to find relevant information from your knowledge base.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "The search query string"
+                    },
+                    "collection_id": {
+                        "type": "string",
+                        "description": "ID of the collection to search in"
+                    },
+                    "search_type": {
+                        "type": "string",
+                        "enum": ["vector", "keyword", "hybrid"],
+                        "description": "Type of search: vector (semantic), keyword (traditional), or hybrid (recommended)",
+                        "default": "hybrid"
+                    },
+                    "max_results": {
+                        "type": "integer",
+                        "description": "Maximum number of results to return (1-100)",
+                        "default": 10,
+                        "minimum": 1,
+                        "maximum": 100
+                    }
+                },
+                "required": ["query", "collection_id"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "search_memories",
+            "description": "Search through user memories using AI-powered semantic search. Use this to retrieve relevant personal context and preferences.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "Search query to find relevant memories"
+                    },
+                    "user_id": {
+                        "type": "string",
+                        "description": "User ID to search memories for"
+                    },
+                    "max_results": {
+                        "type": "integer",
+                        "description": "Maximum number of memories to return",
+                        "default": 10,
+                        "minimum": 1,
+                        "maximum": 100
+                    }
+                },
+                "required": ["query", "user_id"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "create_memory",
+            "description": "Create a new personal memory for a user. Use this to store important context, preferences, or information about the user.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "string",
+                        "description": "User ID to create the memory for"
+                    },
+                    "memory": {
+                        "type": "string",
+                        "description": "The memory content to store"
+                    },
+                    "topics": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "Optional topics/tags for categorizing the memory"
+                    }
+                },
+                "required": ["user_id", "memory"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "list_collections",
+            "description": "List all available knowledge collections. Use this to discover what collections are available before searching.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "limit": {
+                        "type": "integer",
+                        "description": "Maximum number of collections to return",
+                        "default": 100,
+                        "minimum": 1,
+                        "maximum": 1000
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": ["active", "archived"],
+                        "description": "Filter by collection status"
+                    }
+                },
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "list_memories",
+            "description": "List all memories for a user. Use this to retrieve a user's stored memories.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "string",
+                        "description": "User ID to list memories for"
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "Maximum number of memories to return",
+                        "default": 100,
+                        "minimum": 1,
+                        "maximum": 1000
+                    }
+                },
+                "required": ["user_id"]
+            }
+        }
+    }
+]
+```
+
+</Accordion>
+
+<Accordion icon="code" title="TypeScript - Define Mielto tools">
+
+```typescript
+// TypeScript - Define Mielto tools
+const MIELTO_TOOLS = [
+  {
+    type: "function" as const,
+    function: {
+      name: "search_collections",
+      description: "Search within a knowledge collection using semantic, keyword, or hybrid search. Use this to find relevant information from your knowledge base.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "The search query string"
+          },
+          collection_id: {
+            type: "string",
+            description: "ID of the collection to search in"
+          },
+          search_type: {
+            type: "string",
+            enum: ["vector", "keyword", "hybrid"],
+            description: "Type of search: vector (semantic), keyword (traditional), or hybrid (recommended)",
+            default: "hybrid"
+          },
+          max_results: {
+            type: "integer",
+            description: "Maximum number of results to return (1-100)",
+            default: 10,
+            minimum: 1,
+            maximum: 100
+          }
+        },
+        required: ["query", "collection_id"]
+      }
+    }
+  },
+  {
+    type: "function" as const,
+    function: {
+      name: "search_memories",
+      description: "Search through user memories using AI-powered semantic search. Use this to retrieve relevant personal context and preferences.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "Search query to find relevant memories"
+          },
+          user_id: {
+            type: "string",
+            description: "User ID to search memories for"
+          },
+          max_results: {
+            type: "integer",
+            description: "Maximum number of memories to return",
+            default: 10,
+            minimum: 1,
+            maximum: 100
+          }
+        },
+        required: ["query", "user_id"]
+      }
+    }
+  },
+  {
+    type: "function" as const,
+    function: {
+      name: "create_memory",
+      description: "Create a new personal memory for a user. Use this to store important context, preferences, or information about the user.",
+      parameters: {
+        type: "object",
+        properties: {
+          user_id: {
+            type: "string",
+            description: "User ID to create the memory for"
+          },
+          memory: {
+            type: "string",
+            description: "The memory content to store"
+          },
+          topics: {
+            type: "array",
+            items: { type: "string" },
+            description: "Optional topics/tags for categorizing the memory"
+          }
+        },
+        required: ["user_id", "memory"]
+      }
+    }
+  },
+  {
+    type: "function" as const,
+    function: {
+      name: "list_collections",
+      description: "List all available knowledge collections. Use this to discover what collections are available before searching.",
+      parameters: {
+        type: "object",
+        properties: {
+          limit: {
+            type: "integer",
+            description: "Maximum number of collections to return",
+            default: 100,
+            minimum: 1,
+            maximum: 1000
+          },
+          status: {
+            type: "string",
+            enum: ["active", "archived"],
+            description: "Filter by collection status"
+          }
+        },
+        required: []
+      }
+    }
+  },
+  {
+    type: "function" as const,
+    function: {
+      name: "list_memories",
+      description: "List all memories for a user. Use this to retrieve a user's stored memories.",
+      parameters: {
+        type: "object",
+        properties: {
+          user_id: {
+            type: "string",
+            description: "User ID to list memories for"
+          },
+          limit: {
+            type: "integer",
+            description: "Maximum number of memories to return",
+            default: 100,
+            minimum: 1,
+            maximum: 1000
+          }
+        },
+        required: ["user_id"]
+      }
+    }
+  }
+];
+```
+
+</Accordion>
+</AccordionGroup>
+
+### Step 2: Implement Tool Execution Functions
+
+Create functions that execute the actual API calls when tools are invoked:
+
+<AccordionGroup>
+<Accordion icon="code" title="Python - Tool execution functions">
+
+```python
+# Python - Tool execution functions
+import os
+import requests
+from typing import Dict, Any
+
+MIELTO_API_KEY = os.environ.get("MIELTO_API_KEY")
+MIELTO_BASE_URL = "https://api.mielto.com/api/v1"
+
+def execute_tool(tool_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    """Execute a Mielto API tool call"""
+    headers = {
+        "Authorization": f"Bearer {MIELTO_API_KEY}",
+        "Content-Type": "application/json"
+    }
+    
+    if tool_name == "search_collections":
+        response = requests.post(
+            f"{MIELTO_BASE_URL}/collections/search",
+            headers=headers,
+            json=arguments
+        )
+        response.raise_for_status()
+        return response.json()
+    
+    elif tool_name == "search_memories":
+        # Note: Adjust endpoint based on actual API structure
+        response = requests.post(
+            f"{MIELTO_BASE_URL}/memories/search",
+            headers=headers,
+            json=arguments
+        )
+        response.raise_for_status()
+        return response.json()
+    
+    elif tool_name == "create_memory":
+        response = requests.post(
+            f"{MIELTO_BASE_URL}/memories",
+            headers=headers,
+            json=arguments
+        )
+        response.raise_for_status()
+        return response.json()
+    
+    elif tool_name == "list_collections":
+        response = requests.get(
+            f"{MIELTO_BASE_URL}/collections",
+            headers=headers,
+            params=arguments
+        )
+        response.raise_for_status()
+        return response.json()
+    
+    elif tool_name == "list_memories":
+        response = requests.get(
+            f"{MIELTO_BASE_URL}/memories",
+            headers=headers,
+            params=arguments
+        )
+        response.raise_for_status()
+        return response.json()
+    
+    else:
+        raise ValueError(f"Unknown tool: {tool_name}")
+```
+
+</Accordion>
+
+<Accordion icon="code" title="TypeScript - Tool execution functions">
+
+```typescript
+// TypeScript - Tool execution functions
+const MIELTO_API_KEY = process.env.MIELTO_API_KEY!;
+const MIELTO_BASE_URL = "https://api.mielto.com/api/v1";
+
+async function executeTool(
+  toolName: string,
+  arguments: Record<string, any>
+): Promise<any> {
+  const headers = {
+    Authorization: `Bearer ${MIELTO_API_KEY}`,
+    "Content-Type": "application/json",
+  };
+
+  switch (toolName) {
+    case "search_collections":
+      const searchResponse = await fetch(
+        `${MIELTO_BASE_URL}/collections/search`,
+        {
+          method: "POST",
+          headers,
+          body: JSON.stringify(arguments),
+        }
+      );
+      if (!searchResponse.ok) throw new Error(`Request failed: ${searchResponse.status}`);
+      return await searchResponse.json();
+
+    case "search_memories":
+      const memSearchResponse = await fetch(
+        `${MIELTO_BASE_URL}/memories/search`,
+        {
+          method: "POST",
+          headers,
+          body: JSON.stringify(arguments),
+        }
+      );
+      if (!memSearchResponse.ok) throw new Error(`Request failed: ${memSearchResponse.status}`);
+      return await memSearchResponse.json();
+
+    case "create_memory":
+      const createResponse = await fetch(`${MIELTO_BASE_URL}/memories`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(arguments),
+      });
+      if (!createResponse.ok) throw new Error(`Request failed: ${createResponse.status}`);
+      return await createResponse.json();
+
+    case "list_collections":
+      const listResponse = await fetch(
+        `${MIELTO_BASE_URL}/collections?${new URLSearchParams(arguments as any).toString()}`,
+        {
+          method: "GET",
+          headers,
+        }
+      );
+      if (!listResponse.ok) throw new Error(`Request failed: ${listResponse.status}`);
+      return await listResponse.json();
+
+    case "list_memories":
+      const memListResponse = await fetch(
+        `${MIELTO_BASE_URL}/memories?${new URLSearchParams(arguments as any).toString()}`,
+        {
+          method: "GET",
+          headers,
+        }
+      );
+      if (!memListResponse.ok) throw new Error(`Request failed: ${memListResponse.status}`);
+      return await memListResponse.json();
+
+    default:
+      throw new Error(`Unknown tool: ${toolName}`);
+  }
+}
+```
+
+</Accordion>
+</AccordionGroup>
+
+### Step 3: Use Tools in Chat Completions
+
+Now integrate tool calling into your chat completions. The OpenAI client handles LLM interactions, while tool execution functions call Mielto's API endpoints:
+
+<AccordionGroup>
+<Accordion icon="code" title="Python - Complete example with tool calling">
+
+```python
+# Python - Complete example with tool calling
+from openai import OpenAI
+import json
+import os
+
+# Initialize OpenAI client for LLM calls
+openai_client = OpenAI(
+    api_key=os.environ.get("OPENAI_API_KEY"),  # Your OpenAI API key
+)
+
+# Mielto API configuration for tool execution
+MIELTO_API_KEY = os.environ.get("MIELTO_API_KEY")
+MIELTO_BASE_URL = "https://api.mielto.com/api/v1"
+
+def chat_with_tools(user_id: str, user_message: str, conversation_history: list = None):
+    """Chat with tool calling enabled"""
+    messages = conversation_history or []
+    messages.append({"role": "user", "content": user_message})
+    
+    # Initial request with tools
+    response = openai_client.chat.completions.create(
+        model="gpt-5",
+        messages=messages,
+        tools=MIELTO_TOOLS,
+        tool_choice="auto"  # Let the model decide when to use tools
+    )
+    
+    message = response.choices[0].message
+    messages.append(message)
+    
+    # Handle tool calls
+    while message.tool_calls:
+        for tool_call in message.tool_calls:
+            tool_name = tool_call.function.name
+            tool_args = json.loads(tool_call.function.arguments)
+            
+            # Execute the tool using Mielto API
+            tool_result = execute_tool(tool_name, tool_args)
+            
+            # Add tool result to conversation
+            messages.append({
+                "role": "tool",
+                "tool_call_id": tool_call.id,
+                "content": json.dumps(tool_result)
+            })
+        
+        # Get next response with tool results
+        response = openai_client.chat.completions.create(
+            model="gpt-5",
+            messages=messages,
+            tools=MIELTO_TOOLS
+        )
+        
+        message = response.choices[0].message
+        messages.append(message)
+    
+    return message.content
+
+# Example usage
+result = chat_with_tools(
+    user_id="user_123",
+    user_message="Search my knowledge base for information about API authentication"
+)
+print(result)
+```
+
+</Accordion>
+
+<Accordion icon="code" title="TypeScript - Complete example with tool calling">
+
+```typescript
+// TypeScript - Complete example with tool calling
+import OpenAI from "openai";
+
+// Initialize OpenAI client for LLM calls
+const openaiClient = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY!, // Your OpenAI API key
+});
+
+// Mielto API configuration for tool execution
+const MIELTO_API_KEY = process.env.MIELTO_API_KEY!;
+const MIELTO_BASE_URL = "https://api.mielto.com/api/v1";
+
+async function chatWithTools(
+  userId: string,
+  userMessage: string,
+  conversationHistory: any[] = []
+): Promise<string> {
+  const messages: any[] = [...conversationHistory];
+  messages.push({ role: "user", content: userMessage });
+
+  // Initial request with tools
+  let response = await openaiClient.chat.completions.create({
+    model: "gpt-5",
+    messages,
+    tools: MIELTO_TOOLS,
+    tool_choice: "auto", // Let the model decide when to use tools
+  });
+
+  let message = response.choices[0].message;
+  messages.push(message);
+
+  // Handle tool calls
+  while (message.tool_calls && message.tool_calls.length > 0) {
+    for (const toolCall of message.tool_calls) {
+      const toolName = toolCall.function.name;
+      const toolArgs = JSON.parse(toolCall.function.arguments);
+
+      // Execute the tool using Mielto API
+      const toolResult = await executeTool(toolName, toolArgs);
+
+      // Add tool result to conversation
+      messages.push({
+        role: "tool",
+        tool_call_id: toolCall.id,
+        content: JSON.stringify(toolResult),
+      });
+    }
+
+    // Get next response with tool results
+    response = await openaiClient.chat.completions.create({
+      model: "gpt-5",
+      messages,
+      tools: MIELTO_TOOLS,
+    });
+
+    message = response.choices[0].message;
+    messages.push(message);
+  }
+
+  return message.content || "";
+}
+
+// Example usage
+const result = await chatWithTools(
+  "user_123",
+  "Search my knowledge base for information about API authentication"
+);
+console.log(result);
+```
+
+</Accordion>
+</AccordionGroup>
+
+### Complete Example: Agent with Memory and Knowledge Search
+
+Here's a complete example that combines everything:
+
+<AccordionGroup>
+<Accordion icon="code" title="Python - Complete agent example">
+
+```python
+# Python - Complete agent example
+import os
+import json
+import requests
+from openai import OpenAI
+
+# Configuration
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")  # Your OpenAI API key
+MIELTO_API_KEY = os.environ.get("MIELTO_API_KEY")  # Your Mielto API key
+MIELTO_BASE_URL = "https://api.mielto.com/api/v1"
+USER_ID = "user_123"
+
+# Initialize OpenAI client for LLM calls
+openai_client = OpenAI(api_key=OPENAI_API_KEY)
+
+# Mielto API headers for tool execution
+mielto_headers = {
+    "Authorization": f"Bearer {MIELTO_API_KEY}",
+    "Content-Type": "application/json"
+}
+
+def execute_mielto_tool(tool_name: str, arguments: dict):
+    """Execute Mielto API calls"""
+    if tool_name == "search_collections":
+        response = requests.post(
+            f"{MIELTO_BASE_URL}/collections/search",
+            headers=mielto_headers,
+            json=arguments
+        )
+        return response.json()
+    elif tool_name == "search_memories":
+        response = requests.post(
+            f"{MIELTO_BASE_URL}/memories/search",
+            headers=mielto_headers,
+            json=arguments
+        )
+        return response.json()
+    elif tool_name == "create_memory":
+        response = requests.post(
+            f"{MIELTO_BASE_URL}/memories",
+            headers=mielto_headers,
+            json=arguments
+        )
+        return response.json()
+    # Add other tools as needed...
+
+def agent_chat(user_message: str):
+    """Agent that can use Mielto tools"""
+    messages = [
+        {
+            "role": "system",
+            "content": "You are a helpful assistant with access to the user's knowledge base and memories. Use the available tools to search for information when needed."
+        },
+        {"role": "user", "content": user_message}
+    ]
+    
+    max_iterations = 5
+    iteration = 0
+    
+    while iteration < max_iterations:
+        # Call OpenAI for LLM completion
+        response = openai_client.chat.completions.create(
+            model="gpt-5",
+            messages=messages,
+            tools=MIELTO_TOOLS,
+            tool_choice="auto"
+        )
+        
+        message = response.choices[0].message
+        messages.append(message)
+        
+        if not message.tool_calls:
+            break
+        
+        # Execute all tool calls
+        for tool_call in message.tool_calls:
+            tool_name = tool_call.function.name
+            tool_args = json.loads(tool_call.function.arguments)
+            
+            # Ensure user_id is included where needed
+            if "user_id" in tool_args or tool_name in ["search_memories", "create_memory", "list_memories"]:
+                if "user_id" not in tool_args:
+                    tool_args["user_id"] = USER_ID
+            
+            tool_result = execute_mielto_tool(tool_name, tool_args)
+            
+            messages.append({
+                "role": "tool",
+                "tool_call_id": tool_call.id,
+                "content": json.dumps(tool_result)
+            })
+        
+        iteration += 1
+    
+    return messages[-1].content
+
+# Example usage
+result = agent_chat("What information do we have about authentication? Also check my memories.")
+print(result)
+```
+
+</Accordion>
+</AccordionGroup>
+
+### Best Practices
+
+<Tip>
+**Tool Selection**: Only include tools that are relevant to your use case. Too many tools can confuse the model.
+</Tip>
+
+<Note>
+**Error Handling**: Always implement proper error handling for tool execution. If a tool fails, include the error message in the tool response so the LLM can handle it appropriately.
+</Note>
+
+<Warning>
+**API Keys**: Never expose your Mielto API key in client-side code. Always execute tool calls server-side.
+</Warning>
+
+### Next Steps
+
+- Explore more [API endpoints](/api-reference/introduction) to add as tools
+- Learn about [collections](/api-reference/collections/search) for knowledge management
+- Discover [memory management](/api-reference/memories/search) capabilities
+- Check out [conversation management](/api-reference/conversations/list) for context continuity
+

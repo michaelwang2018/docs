@@ -5,6 +5,1138 @@
     "version": "0.1.0"
   },
   "paths": {
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Login User",
+        "operationId": "login_user_api_v1_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Register User",
+        "operationId": "register_user_api_v1_auth_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterNewUserResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/session": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Current Session",
+        "operationId": "current_session_api_v1_auth_session_get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Current Session Api V1 Auth Session Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/refresh": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Refresh Access Token",
+        "operationId": "refresh_access_token_api_v1_auth_refresh_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Refresh Access Token Api V1 Auth Refresh Post"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/me/": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Read Users Me",
+        "operationId": "read_users_me_api_v1_user_me__get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRead"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/profile": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get User Profile",
+        "operationId": "get_user_profile_api_v1_users_profile_get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRead"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update User Profile",
+        "operationId": "update_user_profile_api_v1_users_profile_put",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRead"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/change-password": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Change Password",
+        "operationId": "change_password_api_v1_users_change_password_put",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordChangeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Change Password Api V1 Users Change Password Put"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/workspaces": {
+      "post": {
+        "tags": [
+          "Workspaces"
+        ],
+        "summary": "Create Workspace",
+        "description": "Create new workspace with the current user as owner.",
+        "operationId": "create_workspace_api_v1_workspaces_post",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkspaceCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceRead"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Workspaces"
+        ],
+        "summary": "Read Workspaces",
+        "description": "Retrieve workspaces.",
+        "operationId": "read_workspaces_api_v1_workspaces_get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Skip"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkspaceRead"
+                  },
+                  "title": "Response Read Workspaces Api V1 Workspaces Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Workspaces"
+        ],
+        "summary": "Update Workspace",
+        "description": "Update workspace with deep merge for settings.",
+        "operationId": "update_workspace_api_v1_workspaces_put",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkspaceUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceRead"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/workspaces/current": {
+      "get": {
+        "tags": [
+          "Workspaces"
+        ],
+        "summary": "Read Current Workspace",
+        "description": "Retrieve current workspace.",
+        "operationId": "read_current_workspace_api_v1_workspaces_current_get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceRead"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/workspaces/{workspace_id}": {
+      "get": {
+        "tags": [
+          "Workspaces"
+        ],
+        "summary": "Read Workspace",
+        "description": "Get workspace by ID.",
+        "operationId": "read_workspace_api_v1_workspaces__workspace_id__get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Workspace Id"
+            }
+          },
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceRead"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/workspaces/{workspace_id}/members": {
+      "get": {
+        "tags": [
+          "Workspaces"
+        ],
+        "summary": "Read Workspace With Users",
+        "description": "Get workspace with user information.",
+        "operationId": "read_workspace_with_users_api_v1_workspaces__workspace_id__members_get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Workspace Id"
+            }
+          },
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceMembers"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tier": {
+      "post": {
+        "tags": [
+          "Tiers"
+        ],
+        "summary": "Write Tier",
+        "operationId": "write_tier_api_v1_tier_post",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TierCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TierRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tier not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tiers": {
+      "get": {
+        "tags": [
+          "Tiers"
+        ],
+        "summary": "Read Tiers",
+        "operationId": "read_tiers_api_v1_tiers_get",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "items_per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "title": "Items Per Page"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedListResponse_TierRead_"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tier not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tier/{name}": {
+      "get": {
+        "tags": [
+          "Tiers"
+        ],
+        "summary": "Read Tier",
+        "operationId": "read_tier_api_v1_tier__name__get",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TierRead"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tier not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Tiers"
+        ],
+        "summary": "Patch Tier",
+        "operationId": "patch_tier_api_v1_tier__name__patch",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          },
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TierUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Patch Tier Api V1 Tier  Name  Patch"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tier not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tiers"
+        ],
+        "summary": "Erase Tier",
+        "operationId": "erase_tier_api_v1_tier__name__delete",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          },
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Erase Tier Api V1 Tier  Name  Delete"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tier not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/compress": {
       "post": {
         "tags": [
@@ -2864,6 +3996,264 @@
         }
       }
     },
+    "/api/v1/messages/{message_id}/with-conversation": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Get Message With Conversation",
+        "description": "Get a message with its conversation details.",
+        "operationId": "get_message_with_conversation_api_v1_messages__message_id__with_conversation_get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "message_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Message Id"
+            }
+          },
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageWithConversation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Message not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/messages/{message_id}/thread": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Get Message Thread",
+        "description": "Get a message with its thread (parent and child messages).",
+        "operationId": "get_message_thread_api_v1_messages__message_id__thread_get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "message_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Message Id"
+            }
+          },
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageWithThread"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Message not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/conversations/{conversation_id}/messages": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Get Conversation Messages",
+        "description": "Get all messages in a specific conversation.",
+        "operationId": "get_conversation_messages_api_v1_conversations__conversation_id__messages_get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Conversation Id"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of messages to skip",
+              "default": 0,
+              "title": "Skip"
+            },
+            "description": "Number of messages to skip"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "description": "Number of messages to return",
+              "default": 100,
+              "title": "Limit"
+            },
+            "description": "Number of messages to return"
+          },
+          {
+            "name": "order_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Field to order by",
+              "default": "created_at",
+              "title": "Order By"
+            },
+            "description": "Field to order by"
+          },
+          {
+            "name": "order_direction",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Order direction (asc/desc)",
+              "default": "asc",
+              "title": "Order Direction"
+            },
+            "description": "Order direction (asc/desc)"
+          },
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedResponse_MessageRead_"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Message not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/responses": {
       "post": {
         "tags": [
@@ -4654,6 +6044,143 @@
         }
       }
     },
+    "/api/v1/credentials/cleanup": {
+      "post": {
+        "tags": [
+          "Credentials"
+        ],
+        "summary": "Cleanup Expired Credentials",
+        "description": "Clean up expired credentials (admin only).",
+        "operationId": "cleanup_expired_credentials_api_v1_credentials_cleanup_post",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "days_after_expiry",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Days after expiry to cleanup",
+              "default": 30,
+              "title": "Days After Expiry"
+            },
+            "description": "Days after expiry to cleanup"
+          },
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Cleanup Expired Credentials Api V1 Credentials Cleanup Post"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Credential not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/credentials/encryption/providers": {
+      "get": {
+        "tags": [
+          "Credentials"
+        ],
+        "summary": "Get Encryption Providers",
+        "description": "Get available encryption providers.",
+        "operationId": "get_encryption_providers_api_v1_credentials_encryption_providers_get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Encryption Providers Api V1 Credentials Encryption Providers Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Credential not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/connections": {
       "post": {
         "tags": [
@@ -5621,7 +7148,432 @@
         }
       }
     },
-
+    "/api/v1/connections/expired-credentials": {
+      "get": {
+        "tags": [
+          "Connections"
+        ],
+        "summary": "Get Connections With Expired Credentials",
+        "description": "Get connections that use expired credentials.",
+        "operationId": "get_connections_with_expired_credentials_api_v1_connections_expired_credentials_get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConnectionRead"
+                  },
+                  "title": "Response Get Connections With Expired Credentials Api V1 Connections Expired Credentials Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Connection not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invitations/invite": {
+      "post": {
+        "tags": [
+          "Invitations"
+        ],
+        "summary": "Invite User",
+        "description": "Invite a user to join the workspace.",
+        "operationId": "invite_user_api_v1_invitations_invite_post",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InviteUserResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invitations": {
+      "get": {
+        "tags": [
+          "Invitations"
+        ],
+        "summary": "Get Workspace Invitations",
+        "description": "Get workspace invitations with filtering and pagination.",
+        "operationId": "get_workspace_invitations_api_v1_invitations_get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/WorkspaceUserRole",
+              "description": "Filter by role"
+            },
+            "description": "Filter by role"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Search by email",
+              "title": "Search"
+            },
+            "description": "Search by email"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Page number",
+              "default": 1,
+              "title": "Page"
+            },
+            "description": "Page number"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Items per page",
+              "default": 20,
+              "title": "Limit"
+            },
+            "description": "Items per page"
+          },
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetWorkspaceInvitationsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invitations/accept": {
+      "post": {
+        "tags": [
+          "Invitations"
+        ],
+        "summary": "Accept Invitation",
+        "description": "Accept an invitation using the invitation token.",
+        "operationId": "accept_invitation_api_v1_invitations_accept_post",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcceptInvitationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcceptInvitationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invitations/{invitation_id}": {
+      "delete": {
+        "tags": [
+          "Invitations"
+        ],
+        "summary": "Revoke Invitation",
+        "description": "Revoke an invitation.",
+        "operationId": "revoke_invitation_api_v1_invitations__invitation_id__delete",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "invitation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invitation Id"
+            }
+          },
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Invitations"
+        ],
+        "summary": "Get Invitation",
+        "description": "Get a specific invitation by ID.",
+        "operationId": "get_invitation_api_v1_invitations__invitation_id__get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "invitation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invitation Id"
+            }
+          },
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvitationRead"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/integrations": {
       "get": {
         "tags": [
@@ -6290,6 +8242,60 @@
         }
       }
     },
+    "/api/v1/oauth/callback": {
+      "get": {
+        "tags": [
+          "OAuth"
+        ],
+        "summary": "Oauth Callback",
+        "description": "Handle OAuth callback after user authorization.\n\nThis endpoint is called by the OAuth provider after the user grants permissions.\nIt exchanges the authorization code for access tokens and creates a connection.\n\n**Flow:**\n1. Provider redirects to this endpoint with `code` and `state`\n2. We validate the state token\n3. Exchange code for access and refresh tokens\n4. Create encrypted credential with the tokens\n5. Create active connection\n6. Redirect to success page\n\n**Example Provider Redirect:**\n```\nGET /oauth/callback?code=4/0AY0e-g7...&state=abc123...\n```",
+        "operationId": "oauth_callback_api_v1_oauth_callback_get",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Authorization code from provider",
+              "title": "Code"
+            },
+            "description": "Authorization code from provider"
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "State token for CSRF protection",
+              "title": "State"
+            },
+            "description": "State token for CSRF protection"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/oauth/refresh/{connection_id}": {
       "post": {
         "tags": [
@@ -6388,6 +8394,634 @@
             "content": {
               "application/json": {
                 "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/oauth/error": {
+      "get": {
+        "tags": [
+          "OAuth"
+        ],
+        "summary": "Oauth Error",
+        "description": "OAuth error page.\n\nThis is a placeholder page shown when OAuth authorization fails.\nIn production, this should redirect to the frontend application with error details.",
+        "operationId": "oauth_error_api_v1_oauth_error_get",
+        "parameters": [
+          {
+            "name": "message",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Message"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/logs": {
+      "get": {
+        "tags": [
+          "Logs"
+        ],
+        "summary": "List Logs",
+        "description": "List logs with cursor-based pagination.\n\nSupports multiple data sources:\n- auto: Automatically chooses Redis for recent logs, DB for complex queries\n- redis: Fast access to recent logs (< 7 days)\n- db: Full query capabilities on all logs\n\nExamples:\n    # Get recent logs (fast, from Redis)\n    GET /logs?limit=50&source=redis\n    \n    # Get logs with filters (from database)\n    GET /logs?log_type=completion&status=success&source=db\n    \n    # Filter by tags (finds all logs containing ANY of the tags)\n    GET /logs?tags=completion,trace\n    \n    # Filter by type AND tags (multi logs with specific content)\n    GET /logs?log_type=multi&tags=completion,trace\n    \n    # Get logs by trace\n    GET /logs?trace_id=trace_abc123",
+        "operationId": "list_logs_api_v1_logs_get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Cursor for pagination",
+              "title": "Cursor"
+            },
+            "description": "Cursor for pagination"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Number of logs to return",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Number of logs to return"
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Field to sort by",
+              "default": "created_at",
+              "title": "Sort By"
+            },
+            "description": "Field to sort by"
+          },
+          {
+            "name": "sort_order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/SortOrder"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Sort order",
+              "default": "desc",
+              "title": "Sort Order"
+            },
+            "description": "Sort order"
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Data source: auto, redis, or db",
+              "default": "auto",
+              "title": "Source"
+            },
+            "description": "Data source: auto, redis, or db"
+          },
+          {
+            "name": "log_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by log type (completion, trace, api_log, activity, multi)",
+              "title": "Log Type"
+            },
+            "description": "Filter by log type (completion, trace, api_log, activity, multi)"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by status (success, error, pending)",
+              "title": "Status"
+            },
+            "description": "Filter by status (success, error, pending)"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by tags (comma-separated, e.g., 'completion,trace')",
+              "title": "Tags"
+            },
+            "description": "Filter by tags (comma-separated, e.g., 'completion,trace')"
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by user_id",
+              "title": "User Id"
+            },
+            "description": "Filter by user_id"
+          },
+          {
+            "name": "entity_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by entity_id",
+              "title": "Entity Id"
+            },
+            "description": "Filter by entity_id"
+          },
+          {
+            "name": "trace_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by trace_id",
+              "title": "Trace Id"
+            },
+            "description": "Filter by trace_id"
+          },
+          {
+            "name": "request_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by request_id",
+              "title": "Request Id"
+            },
+            "description": "Filter by request_id"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter logs created after this date",
+              "title": "Start Date"
+            },
+            "description": "Filter logs created after this date"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter logs created before this date",
+              "title": "End Date"
+            },
+            "description": "Filter logs created before this date"
+          },
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/logs/{log_id}": {
+      "get": {
+        "tags": [
+          "Logs"
+        ],
+        "summary": "Get Log",
+        "description": "Get a specific log by ID.\n\nChecks Redis first (fast), falls back to database.",
+        "operationId": "get_log_api_v1_logs__log_id__get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "log_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Log Id"
+            }
+          },
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogRead"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/logs/stats/summary": {
+      "get": {
+        "tags": [
+          "Logs"
+        ],
+        "summary": "Get Log Stats",
+        "description": "Get log statistics.\n\nReturns aggregated statistics including:\n- Total logs by type\n- Total logs by status\n- Total tokens (for completions)\n- Total cost (for completions)\n- Average duration\n\nExample:\n    GET /logs/stats/summary?log_type=completion&start_date=2024-01-01",
+        "operationId": "get_log_stats_api_v1_logs_stats_summary_get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "log_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by log type",
+              "title": "Log Type"
+            },
+            "description": "Filter by log type"
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by user_id",
+              "title": "User Id"
+            },
+            "description": "Filter by user_id"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Start date",
+              "title": "Start Date"
+            },
+            "description": "Start date"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "End date",
+              "title": "End Date"
+            },
+            "description": "End date"
+          },
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogStats"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/logs/trace/{trace_id}": {
+      "get": {
+        "tags": [
+          "Logs"
+        ],
+        "summary": "Get Logs By Trace",
+        "description": "Get all logs for a specific trace ID.\n\nUseful for distributed tracing - see all related operations.\n\nExample:\n    GET /logs/trace/trace_abc123",
+        "operationId": "get_logs_by_trace_api_v1_logs_trace__trace_id__get",
+        "security": [
+          {
+            "DualAuthScheme": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "trace_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trace Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "description": "Maximum logs to return",
+              "default": 100,
+              "title": "Limit"
+            },
+            "description": "Maximum logs to return"
+          },
+          {
+            "name": "X-Workspace-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The workspace ID",
+              "title": "X-Workspace-Id"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogListResponse"
+                }
               }
             }
           },
@@ -6789,17 +9423,25 @@
         "type": "string",
         "enum": [
           "api_key",
+          "oauth2",
+          "basic_auth",
+          "bearer_token",
+          "jwt",
+          "public_secret_key",
+          "service_account",
+          "connection_string",
+          "username_password",
+          "tls_certificate",
+          "private_key",
+          "custom",
           "oauth_token",
           "oauth_token_refresh",
           "oauth_token_refresh_rotation",
-          "basic_auth",
           "access_token",
-          "access_token_refresh",
-          "public_key_secret",
-          "connection_string",
-          "custom"
+          "access_token_refresh"
         ],
-        "title": "AuthType"
+        "title": "AuthType",
+        "description": "Unified authentication types for integrations, model providers, and vector stores.\n\nCore Types:\n- API_KEY: Simple API key authentication\n- OAUTH2: OAuth 2.0 flow (includes token refresh capabilities)\n- BASIC_AUTH: HTTP Basic Authentication (username:password)\n- BEARER_TOKEN: Bearer token authentication\n- JWT: JSON Web Token authentication\n\nAdvanced Types:\n- PUBLIC_SECRET_KEY: Public/Secret key pair (e.g., AWS-style)\n- SERVICE_ACCOUNT: Service account credentials (e.g., Google Cloud)\n- CONNECTION_STRING: Database-style connection strings\n- USERNAME_PASSWORD: Username and password pair\n- TLS_CERTIFICATE: TLS/SSL certificate-based authentication\n- CUSTOM: Custom authentication implementation"
       },
       "Body_bulk_update_status_api_v1_contents_bulk_update_status_patch": {
         "properties": {
@@ -9269,12 +11911,12 @@
       },
       "CredentialList": {
         "properties": {
-          "credentials": {
+          "data": {
             "items": {
               "$ref": "#/components/schemas/CredentialRead"
             },
             "type": "array",
-            "title": "Credentials"
+            "title": "Data"
           },
           "total": {
             "type": "integer",
@@ -9291,7 +11933,7 @@
         },
         "type": "object",
         "required": [
-          "credentials",
+          "data",
           "total",
           "page",
           "size"
@@ -9465,6 +12107,18 @@
             ],
             "title": "Description"
           },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status",
+            "description": "Status of the credential"
+          },
           "credential_scope": {
             "anyOf": [
               {
@@ -9476,6 +12130,41 @@
               }
             ],
             "title": "Credential Scope"
+          },
+          "auth_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AuthType"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Type of authentication (API_KEY, OAUTH2, etc.)"
+          },
+          "credential_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CredentialType"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Category of credential (INTEGRATION, MODEL, etc.)"
+          },
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Id",
+            "description": "User ID of the credential"
           },
           "credentials": {
             "anyOf": [
@@ -10229,7 +12918,8 @@
           "completion",
           "trace",
           "api_log",
-          "activity"
+          "activity",
+          "multi"
         ],
         "title": "LogType"
       },
@@ -11538,6 +14228,85 @@
         ],
         "title": "MessageWithThread",
         "description": "Schema for message with thread information."
+      },
+      "ModelCredentials": {
+        "properties": {
+          "credential_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Credential Id",
+            "description": "ID of the credential to use for this provider"
+          },
+          "api_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Api Key",
+            "description": "Direct API key (if not using credential_id)"
+          },
+          "organization": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Organization",
+            "description": "Organization ID for the provider"
+          },
+          "base_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Url",
+            "description": "Custom base URL for the provider API"
+          },
+          "max_retries": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Retries",
+            "description": "Maximum number of retries for API calls"
+          },
+          "timeout": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timeout",
+            "description": "Timeout in seconds for API calls"
+          }
+        },
+        "type": "object",
+        "title": "ModelCredentials",
+        "description": "Model credentials schema for workspace model settings."
       },
       "OAuthInitiateRequest": {
         "properties": {
@@ -12901,7 +15670,7 @@
           "model": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/WorkspaceModelSettings"
+                "$ref": "#/components/schemas/WorkspaceModelProviderSettings"
               },
               {
                 "type": "null"
@@ -13049,7 +15818,7 @@
           "model": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/WorkspaceModelSettings"
+                "$ref": "#/components/schemas/WorkspaceModelProviderSettings"
               },
               {
                 "type": "null"
@@ -13230,7 +15999,7 @@
         "title": "WorkspaceMemoryStorageConfig",
         "description": "Workspace memory storage configuration schema."
       },
-      "WorkspaceModelSettings": {
+      "WorkspaceModelProviderSettings": {
         "properties": {
           "model": {
             "anyOf": [
@@ -13242,7 +16011,7 @@
               }
             ],
             "title": "Model",
-            "description": "Model for memory processing"
+            "description": "Model name for this provider"
           },
           "provider": {
             "anyOf": [
@@ -13254,10 +16023,26 @@
               }
             ],
             "title": "Provider",
-            "description": "Provider for memory processing"
+            "description": "Provider name (e.g., openai, anthropic, google)"
+          },
+          "default": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Default",
+            "description": "Whether this is the default provider for this workspace",
+            "default": false
           },
           "credentials": {
             "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelCredentials"
+              },
               {
                 "additionalProperties": true,
                 "type": "object"
@@ -13267,7 +16052,7 @@
               }
             ],
             "title": "Credentials",
-            "description": "Credentials for model processing"
+            "description": "Credentials configuration for this provider"
           },
           "use_default_cred": {
             "anyOf": [
@@ -13279,8 +16064,40 @@
               }
             ],
             "title": "Use Default Cred",
-            "description": "Use default credentials",
+            "description": "Use platform default credentials if no credentials specified",
             "default": true
+          }
+        },
+        "type": "object",
+        "title": "WorkspaceModelProviderSettings",
+        "description": "Workspace model provider settings schema."
+      },
+      "WorkspaceModelSettings-Input": {
+        "properties": {
+          "providers": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/WorkspaceModelProviderSettings"
+            },
+            "type": "object",
+            "title": "Providers",
+            "description": "Providers for model processing",
+            "default": {}
+          }
+        },
+        "type": "object",
+        "title": "WorkspaceModelSettings",
+        "description": "Workspace model settings schema."
+      },
+      "WorkspaceModelSettings-Output": {
+        "properties": {
+          "providers": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/WorkspaceModelProviderSettings"
+            },
+            "type": "object",
+            "title": "Providers",
+            "description": "Providers for model processing",
+            "default": {}
           }
         },
         "type": "object",
@@ -13489,7 +16306,7 @@
           "model": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/WorkspaceModelSettings"
+                "$ref": "#/components/schemas/WorkspaceModelSettings-Input"
               },
               {
                 "type": "null"
@@ -13497,9 +16314,56 @@
             ],
             "description": "Model for memory processing",
             "default": {
-              "model": "gpt-4o",
-              "provider": "openai",
-              "use_default_cred": true
+              "providers": {
+                "anthropic": {
+                  "default": false,
+                  "model": "claude-3-5-sonnet-latest",
+                  "provider": "anthropic",
+                  "use_default_cred": false
+                },
+                "cohere": {
+                  "default": false,
+                  "model": "command-r-plus",
+                  "provider": "cohere",
+                  "use_default_cred": false
+                },
+                "deepseek": {
+                  "default": false,
+                  "model": "deepseek-chat",
+                  "provider": "deepseek",
+                  "use_default_cred": false
+                },
+                "google": {
+                  "default": false,
+                  "model": "gemini-2.0-flash",
+                  "provider": "google",
+                  "use_default_cred": false
+                },
+                "groq": {
+                  "default": false,
+                  "model": "llama-3.3-70b-versatile",
+                  "provider": "groq",
+                  "use_default_cred": false
+                },
+                "mistral": {
+                  "default": false,
+                  "model": "mistral-large-latest",
+                  "provider": "mistral",
+                  "use_default_cred": false
+                },
+                "openai": {
+                  "default": true,
+                  "model": "gpt-4o",
+                  "provider": "openai",
+                  "use_default_cred": false
+                },
+                "perplexity": {
+                  "default": false,
+                  "model": "sonar",
+                  "provider": "perplexity",
+                  "use_default_cred": false
+                }
+              }
             }
           },
           "embedding": {
@@ -13563,7 +16427,7 @@
           "model": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/WorkspaceModelSettings"
+                "$ref": "#/components/schemas/WorkspaceModelSettings-Output"
               },
               {
                 "type": "null"
@@ -13571,9 +16435,56 @@
             ],
             "description": "Model for memory processing",
             "default": {
-              "model": "gpt-4o",
-              "provider": "openai",
-              "use_default_cred": true
+              "providers": {
+                "anthropic": {
+                  "default": false,
+                  "model": "claude-3-5-sonnet-latest",
+                  "provider": "anthropic",
+                  "use_default_cred": false
+                },
+                "cohere": {
+                  "default": false,
+                  "model": "command-r-plus",
+                  "provider": "cohere",
+                  "use_default_cred": false
+                },
+                "deepseek": {
+                  "default": false,
+                  "model": "deepseek-chat",
+                  "provider": "deepseek",
+                  "use_default_cred": false
+                },
+                "google": {
+                  "default": false,
+                  "model": "gemini-2.0-flash",
+                  "provider": "google",
+                  "use_default_cred": false
+                },
+                "groq": {
+                  "default": false,
+                  "model": "llama-3.3-70b-versatile",
+                  "provider": "groq",
+                  "use_default_cred": false
+                },
+                "mistral": {
+                  "default": false,
+                  "model": "mistral-large-latest",
+                  "provider": "mistral",
+                  "use_default_cred": false
+                },
+                "openai": {
+                  "default": true,
+                  "model": "gpt-4o",
+                  "provider": "openai",
+                  "use_default_cred": false
+                },
+                "perplexity": {
+                  "default": false,
+                  "model": "sonar",
+                  "provider": "perplexity",
+                  "use_default_cred": false
+                }
+              }
             }
           },
           "embedding": {
